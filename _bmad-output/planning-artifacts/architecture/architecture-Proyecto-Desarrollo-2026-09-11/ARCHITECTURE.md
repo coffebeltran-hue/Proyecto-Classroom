@@ -28,6 +28,9 @@ flowchart TB
   W --> M
   P --> M
   R --> M
+  H[Independent operational observer] --> E
+  H --> M
+  H --> N[Independent operator incident delivery]
 ```
 
 AD-11 mandates separate API and worker deployables. Integration, preservation and retention are worker profiles using the same repository/image and domain packages, not microservices. Separate profiles have distinct credentials. A pilot may colocate them on the same container host but never in the HTTP process. Jobs survive HTTP deployment. No student code runs in these profiles.
@@ -100,3 +103,9 @@ This is a design tree, not generated application code. Prefer Vite's official Re
 | AD-18 | Silent identity reassignment vs audited lineage+external reconciliation | Proposed institution-safe teacher correction; more explicit recovery |
 
 Subordinate proposals do not reopen adopted business rules. Documentary candidate patches are recorded in EVIDENCE; no lockfile, full peer resolution or runtime compatibility has been verified.
+
+## Approved documentary repairs — 2026-09-17
+
+ACR-002 adds per-account repository desired-access and attempt records within Integration; ACR-003 extends the existing deletion journal within Preservation. Neither is a new deployed service or a distributed transaction. ACR-004 uses short course-before-snapshot coordination; async recalculation is only a projection update. ACR-011 requires an external observer/delivery route independent of the failed API/DB/notice store; reuse hosting monitoring where sufficient, vendor/owner under OQ-10/13, actual failure proof RR-07. Product notices remain in-app.
+
+AD-5/7 clarifications are adopted; exact corrected domain/transaction contracts are in DATA-MODEL and OPERATIONS. AD-12–18 remain PROPOSED despite authorization to repair their documentation. No stack, process, source-of-truth or future-evaluator expansion occurred. The original independent review remains historical evidence; next gate is targeted independent re-review, not implementation.

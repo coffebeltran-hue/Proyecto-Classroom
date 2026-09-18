@@ -1,13 +1,13 @@
 # Validation, delivery and Definition of Done
 
-This is a plan, not executed tests or authorization to build. All implementation begins only after independent adversarial review, disposition of blocking findings and explicit user authorization.
+This is a plan, not executed tests or authorization to build. Repaired 2026-09-17 within Juan-approved documentary scope; no runtime/provider experiment occurred. All implementation begins only after independent adversarial review, disposition of blocking findings and explicit user authorization.
 
 ## Sequence and acceptance gates
 
 | Gate / increment | Deliverable | Required proof |
 | --- | --- | --- |
 | G0 Package preparation | Complete linked documents, current approvals, OpenAPI, physical constraints | Cross-document and structural checks in REVIEW |
-| G1 Independent adversarial review | Independent findings, input reconciliation, proposed-contract challenges | Review outcome and resolved/deferred findings; not passed in this package |
+| G1 Independent adversarial review | Independent findings, input reconciliation, proposed-contract challenges | Original review completed PASS WITH REQUIRED FIXES; bounded documentary repairs require targeted independent re-review; not an implementation approval |
 | G2 Authorization and technical baseline | User authorizes next work; dependency/provider spikes scoped | RR-01..RR-04 evidence before depending on their assumptions |
 | I1 Identity/course foundation | Login, institutional boundary, dedicated org, staff, roster, teacher-approved linking | Real DB/RLS and negative role/tenant tests; real GitHub auth |
 | I2 Assignment and provisioning | Versioned template/invite/acceptance/access | One logical repo under duplicate clicks/crashes; actual student access |
@@ -21,7 +21,7 @@ Do not interpret increments as silos: tests/security/persistence/UX/integration 
 
 ## Testing strategy
 
-- Unit: exact decimal lexical parsing/half-up percentage, policy versions, effective deadlines, state transitions, classification/validation separation, archive manifest interpretation. No test that merely restates a getter as evidence of a business invariant.
+- Unit: exact decimal lexical parsing/half-up percentage, policy versions, effective deadlines, state transitions, explicit rejection/exception/reclassification, intake-sequence ordering, classification/validation separation, archive manifest interpretation. No test that merely restates a getter as evidence of a business invariant.
 - Integration: real selected PostgreSQL, migrations from empty/prior version, unique/composite FK/check/constraint triggers, forced RLS with actual runtime logins, shared transaction publication/retention, inbox/outbox and idempotency races.
 - Provider adapters: deterministic stubs for every documented failure plus real dedicated GitHub sandbox for App, permissions, private template, collaborators, push webhook and Actions reports. Mocks alone do not meet Done.
 - API: OpenAPI schema conformance, request precision and unknown fields, CSRF/OAuth boundaries, x-authorization interpreted as tests, duplicate keys, cursor stability, safe error responses, separate student/staff views.
@@ -87,3 +87,26 @@ A feature is Done only with applicable frontend, API, authorization, exact persi
 10. Independent code/security review at implementation stage; unresolved blocking findings prevent release.
 
 The documentation package itself is Done-for-review when every README link exists, AD statuses reconcile, named contracts align, OpenAPI structural checks pass and remaining questions/research have owners/gates. That does not pass G1 or authorize implementation.
+
+## Targeted repair proof matrix — all planned, none executed
+
+| Proof | Required assertion | Trace |
+| --- | --- | --- |
+| RP-T01 | First/reapproved multi-course identity scope, scoped grant, enrollment/role race, historical actors unchanged | ACR-001; AD-3/12/18; OQ-12 |
+| RP-T02 | Fresh session needs no local account UUID; stale-account/replay preserves binding history | ACR-008 |
+| RP-T03 | Old PUT finishes after newer DELETE/absent read and original worker crash; uncertainty stays visible, invitations/late grant repaired | ACR-002; RR-03 |
+| RP-T04 | Cancel after export, crash at every journal/DB boundary, older DB/current journal; canceled remains, deleted never resurrects, ambiguity quarantines | ACR-003; RR-05 |
+| RP-T05 | Reopen/migration wins before claim or earlier claim disclosed; hold/publication/purge share consistent order | ACR-004; RR-05/07 |
+| RP-T06 | A-before-B intake, B-before-A confirmation/publication; no inverted latest; gaps and pending/rejected views accurate | ACR-005; RR-04 |
+| RP-T07 | Fresh browser/staff recovers durable requests without local keys; cursor/live filter and tenant/course/TA negatives | ACR-006 |
+| RP-T08 | Read version→explicit reject/exception/reclassify; stale CAS conflicts, exact replay, wrong SHA/actor never confirmed, incident never receipt | ACR-009/010 |
+| RP-T09 | 50 one-MiB captures/2 GiB/100 MiB reservations automatically recover after refunds; no double settle or starvation | ACR-007; RR-02/06 |
+| RP-T10 | Full request before deadline, locks/pool after deadline; adopted ingress timestamp preserved; policy activation/clock ambiguity needs_review | AD-5; RR-04/07 |
+| RP-T11 | Verified-deleted ordinary publication denied; exact institutional grant consumed by teacher publication only; no recapture, fake retention or internal-note leak | AD-7; RR-05 |
+| RP-T12 | API/DB/worker/notice/telemetry failures still deliver independently within agreed bound; recovery deduplicated | ACR-011; OQ-13/RR-07 |
+| RP-T13 | Existing formative-only, decimals, grade/withdrawal CAS, retention floors, exact-SHA and hostile archive invariants regress cleanly | AD-1/4/6/7/8/9 |
+| RP-T14 | Exact dependencies, real restricted pg-boss/DB lifecycle and actual frozen template/provider behavior | RR-01/02/03; AD-17 conditional |
+
+Documentary Done requires each ACR mapped to concrete changed contracts plus generator/OpenAPI consistency, no silent AD adoption and preserved independent review. It does not make a feature Done. Runtime closure still needs fixtures/configuration/version IDs, actual assertions/results and failure evidence under the existing owner/gate. Targeted independent re-review is the next gate; no code, migrations, resource creation or deployment follows automatically.
+
+Operational release adds independent observer/delivery and a named owner; missing progress/telemetry must alert. Destructive recovery fences the old environment, validates ordered deletion journal completeness and reconciles canceled/start-authorized/verified operations before access. A retain-only pilot deviation is not implicitly approved. Numeric SLO/RPO/RTO and support remain OQ-13; backup extra thirty-day disappearance remains RR-05, never a timer guarantee.

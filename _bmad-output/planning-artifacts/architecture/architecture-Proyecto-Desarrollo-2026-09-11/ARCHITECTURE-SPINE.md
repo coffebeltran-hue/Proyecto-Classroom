@@ -5,9 +5,9 @@ purpose: discussion
 altitude: initiative
 paradigm: modular monolith with ports and adapters
 scope: Preimplementation platform contract
-status: ready-for-independent-review
+status: repaired-awaiting-targeted-independent-review
 created: 2026-09-11
-updated: 2026-09-13
+updated: 2026-09-17
 implementation_authorized: false
 ---
 
@@ -57,7 +57,7 @@ Arrows show allowed source dependencies. Domain imports none of the outer adapte
 ### AD-5 — Durable receipt and academic time [ADOPTED]
 - **Binds:** intake, validation, deadlines, exceptions and UX.
 - **Prevents:** fabricated receipts, backdating and processing delay determining lateness.
-- **Rule:** Persist actor, acceptance/assignment, SHA, backend UTC received time, effective deadline and policy version before receipt acknowledgement. Receipt at or before deadline is candidate on-time; confirm only valid authorization and revision evidence. Insufficient evidence needs review; invalid requests never confirm. Separate validation from classification. Teacher exceptions and later reclassification append decisions without changing receipt. Same-key retry returns original operation; changed SHA is a new operation.
+- **Rule:** AD-5 clarification ADOPTED 2026-09-17: sample candidate received_at at trusted full-request backend ingress with server-bound context before internal pool/lock/queue waiting; only durable intake makes it an official receipt. Persist actor, acceptance/assignment, SHA, receipt/persistence/confirmation timing, applicable deadline/policy and timestamp provenance separately. No durable intake means no reconstructed/backdated receipt. Client, commit, TCP, first-byte and arbitrary proxy times have no authority. Clock/policy uncertainty requires needs_review, not automatic lateness. R-01 historical preview/TTL remains proposed. Receipt at or before deadline is candidate on-time; confirm only valid authorization and revision evidence. Insufficient evidence needs review; invalid requests never confirm. Separate validation from classification. Teacher exceptions and later reclassification append decisions without changing receipt. Same-key retry returns original operation; changed SHA is a new operation.
 
 ### AD-6 — Exact-SHA preservation [ADOPTED]
 - **Binds:** confirmed revisions, capture and storage.
@@ -67,7 +67,7 @@ Arrows show allowed source dependencies. Domain imports none of the outer adapte
 ### AD-7 — Pilot retention and configurable limits [ADOPTED]
 - **Binds:** closure, publication, capture, holds, purge, restore and telemetry.
 - **Prevents:** permanent code retention by implication, silent shortening or premature deletion.
-- **Rule:** Active/unclosed course retains snapshots; archive is not academic_close. Retain 12 months after explicit close; later publication extends referenced evidence at least 12 months. Expiry begins 30-day pending deletion; authorized hold records reason/responsible/creation/review, never auto-released on review date. Version policy; migrate existing promises explicitly and audit. Preserve minimal metadata permanently after byte deletion. Verify recoverable provider copies gone; extra 30-day backup bound remains RESEARCH REQUIRED. Restore replays deletion records. Initial configurable limits: 100 MiB compressed, 500 MiB expanded, 20,000 entries, 20 GiB/course, 100 GiB/institution, 80/95% alerts. Block preservation without truncation/early deletion or infinite deterministic retries; forecast and measure usage, percentiles, durations, growth and blocked/failure frequency.
+- **Rule:** Active/unclosed course retains snapshots; archive is not academic_close. Retain 12 months after explicit close; later publication extends still-retainable referenced evidence at least 12 months. AD-7 clarification ADOPTED 2026-09-17: verified-deleted historical code blocks ordinary new publication; only a scoped institutional exception permits a teacher to publish, preserving scope, authorizer/publisher, reason, remaining evidence basis, safe explanation and immutable history. Declare historical code unavailable; no restored bytes or retroactive twelve-month byte-retention claim. Institution grants, teacher publishes. Post-deletion recapture is OUT OF MVP; future recapture needs separate approval and new provenance. Expiry begins 30-day pending deletion; authorized hold records reason/responsible/creation/review, never auto-released on review date. Version policy; migrate existing promises explicitly and audit. Preserve minimal metadata permanently after byte deletion. Verify recoverable provider copies gone; extra 30-day backup bound remains RESEARCH REQUIRED. Restore replays deletion records. Initial configurable limits: 100 MiB compressed, 500 MiB expanded, 20,000 entries, 20 GiB/course, 100 GiB/institution, 80/95% alerts. Block preservation without truncation/early deletion or infinite deterministic retries; forecast and measure usage, percentiles, durations, growth and blocked/failure frequency.
 
 ### AD-8 — Exact numeric scale [ADOPTED]
 - **Binds:** assignment versions, evaluation, draft and publication.
@@ -92,27 +92,27 @@ Arrows show allowed source dependencies. Domain imports none of the outer adapte
 ### AD-12 — Tenant ownership [PROPOSED]
 - **Binds:** DB, API, workers, cache, exports and evidence.
 - **Prevents:** individually compliant modules referencing another tenant's records.
-- **Rule:** Tenant entities use `(institution_id,id)` keys and composite FKs, forced RLS and transaction-local tenant/actor context under non-owner runtime roles. Same-tenant cross-course relationships require additional ownership constraints. Resolve tenant from trusted resource/installation mapping; role never grants implicit global academic read.
+- **Rule:** Tenant entities use `(institution_id,id)` keys and composite FKs, forced RLS and transaction-local tenant/actor context under non-owner runtime roles. Same-tenant cross-course relationships require additional ownership constraints. Every identity activation, including initial multi-course approval and reapproval after revocation, checks all affected course authority or a scoped teacher grant under stable profile/enrollment serialization; request collections enforce the same resource ownership. Historical access remains bounded by OQ-12. Resolve tenant from trusted resource/installation mapping; role never grants implicit global academic read.
 
 ### AD-13 — Durable effect protocol [PROPOSED]
 - **Binds:** outbox, inbox, queue, workers and provider calls.
 - **Prevents:** lost intent or duplicate external business effects after crashes.
-- **Rule:** Atomic domain/audit/outbox commit; at-least-once dispatcher and idempotent effect keys/checkpoints. Raw authenticated webhook envelope precedes acknowledgement. No DB transaction spans slow provider calls. Unknown external outcome reconciles provenance before retry. Domain evidence outlives queue retention; runtime pg-boss migration disabled and release job owns schema changes.
+- **Rule:** Atomic domain/audit/outbox commit; at-least-once dispatcher and idempotent effect keys/checkpoints. Raw authenticated webhook envelope precedes acknowledgement. No DB transaction spans slow provider calls. Unknown external outcome reconciles provenance before retry. Access effects persist per-repository/account desired generation and potentially issued attempts; stale completion never certifies current cleanup. Unresolved old grants stay visible and recurring reconciliation covers collaborators and invitations. Lease expiry/observed absence alone cannot prove remote settlement. Preserve original acknowledgement separately from current GET state. Domain evidence outlives queue retention; runtime pg-boss migration disabled and release job owns schema changes.
 
 ### AD-14 — Evidence provenance and states [PROPOSED]
 - **Binds:** previews, validation, Actions and student projections.
 - **Prevents:** a later observation proving an earlier fact or a run for one SHA grading another.
-- **Rule:** Receipt, validation, classification, revision, capture and grade lifecycle are independent. Server-bound preview observation fixes actor/acceptance/repo/SHA/branch/policy and observed time. Missing admissible pre-receipt evidence needs review. Preserve run/attempt/workflow/SHA/report provenance; no reporting data can write official grades. Preview TTL/eligibility semantics are R-01 in EVIDENCE, not user approval.
+- **Rule:** Receipt, validation, classification, revision, capture and grade lifecycle are independent. Server-bound preview observation fixes actor/acceptance/repo/SHA/branch/policy and observed time. Missing admissible pre-receipt evidence needs review. Preserve run/attempt/workflow/SHA/report provenance; no reporting data can write official grades. Intake allocates immutable request_sequence; confirmed revision inherits it, allowing gaps. Latest request, latest confirmed and graded revision differ. Current request exposes its CAS version and is discoverable through scoped collections; explicit reject/confirm_exception/reclassify commands preserve independent axes. Preview TTL/eligibility semantics remain R-01/RR-04, not adopted by AD-5; TTL is evaluated at receipt rather than worker execution time.
 
 ### AD-15 — Publication and purge serialization [PROPOSED]
 - **Binds:** drafts, current pointer, withdrawal, retention and purge.
 - **Prevents:** publication overwrites or deletion racing newly extended retention.
-- **Rule:** Immutable events with current pointer/generation CAS and draft version; atomically extend retention when publishing. Snapshot lock/deletion fence serializes hold/publication against purge. After destructive fence, competing preservation demand returns explicit conflict. Tombstone reaches independent journal before bytes are deleted; restore gates access on replay.
+- **Rule:** Immutable events with current pointer/generation CAS and draft version; atomically extend retention when publishing. Course eligibility lock/generation followed by current-grade when needed and snapshot locks serializes reopen/policy changes/hold/publication against purge. Reopen synchronously fences future claims; bulk recalculation is asynchronous and cannot shorten floors. After destructive fence, competing preservation demand returns explicit conflict. Cancel versus destructive-start authorization uses one CAS transition. Ordered independent journal records prepared, canceled, destructive_start_authorized and verified preserve recovery; cancellation completes only after durable journal readback. Ambiguous histories quarantine, old environments are fenced, and no provider call holds a DB transaction. AD-7 exceptional publication requires exact scoped grant/evidence basis and never bypasses an active purge fence.
 
 ### AD-16 — Private bounded evidence [PROPOSED]
 - **Binds:** capture, quota, download and deletion.
 - **Prevents:** archive abuse, quota races and unauthorized source downloads.
-- **Rule:** Reserve institution then course capacity, stream/inspect bounded archives without execution, commit exact-SHA metadata only after integrity verification. Capture attempts use generation fencing. Authenticated authorized download uses opaque snapshot ID, never caller object key. Purge verifies all recoverable versions/copies, never timer-only success. AWS S3 is a provider recommendation, not an approved vendor.
+- **Rule:** Reserve institution then course capacity, stream/inspect bounded archives without execution, commit exact-SHA metadata only after integrity verification. Capture attempts use generation fencing and once-only reservation settlement. The existing bounded fair quota sweep re-admits blocked captures after refunds/reclamation/deletion/limit changes without requiring manual retries; deterministic invalid archives do not loop. Verified-deleted evidence cannot be recaptured in MVP. Authenticated authorized download uses opaque snapshot ID, never caller object key. Purge verifies all recoverable versions/copies, never timer-only success. AWS S3 is a provider recommendation, not an approved vendor.
 
 ### AD-17 — Stable templates [PROPOSED]
 - **Binds:** published assignment versions and provisioning.
@@ -122,7 +122,7 @@ Arrows show allowed source dependencies. Domain imports none of the outer adapte
 ### AD-18 — Audited identity lineage [PROPOSED]
 - **Binds:** institution-wide bindings, courses, submissions and external access.
 - **Prevents:** single-course correction granting cross-course authority or reassigning historical authorship.
-- **Rule:** Correction requires teacher authority for all affected courses or explicit scoped institutional grant; reverse uniqueness is proposed. Record predecessor/successor, invalidate old authorization and reconcile GitHub access by generation. Existing acceptance subject stays academic-profile based; future actions use current authorized binding and preserve the actual actor/binding on each new request. Never rewrite historical receipt/grade identity.
+- **Rule:** All binding activation paths require teacher authority for all affected courses or explicit scoped institutional grant; predecessor linkage applies after revocation and first multi-course approval uses equivalent scope. Resolve the request account from the authenticated session; inspect profile/request context versions and preserve old actors. Correction and enrollment mutations share the profile lock; reverse uniqueness is proposed. Record predecessor/successor, invalidate old authorization and reconcile GitHub access by desired generation plus durable uncertain-attempt accounting; no local fence promises instantaneous remote revocation. Existing acceptance subject stays academic-profile based; future actions use current authorized binding and preserve the actual actor/binding on each new request. Never rewrite historical receipt/grade identity.
 
 ## Stack seed
 
@@ -143,5 +143,9 @@ Exact candidate pins are RECOMMENDATION from documentary research, not an instal
 
 ## Deferred and review gates
 
-EVIDENCE.md owns open-item identifiers, owner and closure gate. Remaining external choices are hosting/storage region and institutional readiness; remaining experiments concern compatibility, GitHub permissions/templates, temporal evidence and recoverable-copy deletion. Concrete proposed defaults cover subordinate design choices so builders cannot invent contradictory defaults. They require independent review and package approval before building. REVIEW.md records preparation checks; it does not claim the independent adversarial gate has passed.
+EVIDENCE.md owns open-item identifiers, owner and closure gate. Remaining external choices are hosting/storage region and institutional readiness; remaining experiments concern compatibility, GitHub permissions/templates, temporal evidence and recoverable-copy deletion. Concrete proposed defaults cover subordinate design choices so builders cannot invent contradictory defaults. Juan approved the bounded documentary repair scope on 2026-09-17; AD-12–AD-18 remain PROPOSED. The original independent review is complete; corrected contracts await targeted independent re-review. REVIEW.md records author checks only. OQ-10–13 and RR-01–08 remain open; implementation is unauthorized.
 
+
+## Repair trace — 2026-09-17
+
+ACR-001→AD-12/18; ACR-002→AD-13/18; ACR-003/004→AD-15; ACR-005/006/009/010→AD-14; ACR-007→AD-16; ACR-008→AD-18; ACR-011→AD-11 operations/R-11. Independent incident observation/delivery must survive API/DB failure; owner and numeric bounds remain OQ-10/13 and RR-07. [Repair changelog](reviews/repair/REPAIR-CHANGELOG.md) records documentary disposition, not operational closure.

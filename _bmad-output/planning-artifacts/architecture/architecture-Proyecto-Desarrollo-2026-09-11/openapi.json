@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Academic Programming Platform — proposed MVP",
-    "version": "0.1.0-design",
+    "version": "0.2.0-design",
     "description": "Preimplementation contract. AD-1..AD-11 approved; mechanics proposed. No application implemented."
   },
   "servers": [
@@ -3578,7 +3578,7 @@
       "post": {
         "operationId": "reopenCourse",
         "summary": "reopen Course",
-        "x-authorization": "Course teacher or Institution Admin, preserve retention floors",
+        "x-authorization": "Course teacher or Institution Admin, synchronous course retention fence; disclose prior purge claims",
         "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
         "parameters": [
           {
@@ -5169,7 +5169,7 @@
       "post": {
         "operationId": "decideIdentityLink",
         "summary": "decide Identity Link",
-        "x-authorization": "Course teacher, unmatched request cannot approve",
+        "x-authorization": "Teacher with all affected course authority or scoped grant for every activation; unmatched cannot approve; reject requires request course only",
         "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
         "parameters": [
           {
@@ -5337,7 +5337,7 @@
       "post": {
         "operationId": "correctIdentityBinding",
         "summary": "correct Identity Binding",
-        "x-authorization": "Teacher authorized across affected courses or explicit correction grant",
+        "x-authorization": "Teacher authorized across affected courses or explicit correction grant; profile approval_context and binding CAS",
         "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
         "parameters": [
           {
@@ -8499,6 +8499,525 @@
         }
       }
     },
+    "/accepted-assignments/{id}/submission-requests": {
+      "get": {
+        "operationId": "listAcceptanceSubmissionRequests",
+        "summary": "list Acceptance Submission Requests",
+        "x-authorization": "Owning currently authorized student or scoped staff submissions_read",
+        "description": "Current durable request collection; stable cursor bound to scope/filter/order, authorization per page. Live status filters require refresh to discover items transitioning behind a previous cursor. No local key required.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          {
+            "name": "validation_state",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "received",
+                "validating",
+                "confirmed",
+                "needs_review",
+                "rejected"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmissionRequestStatusPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/classrooms/{id}/submission-requests": {
+      "get": {
+        "operationId": "listCourseSubmissionRequests",
+        "summary": "list Course Submission Requests",
+        "x-authorization": "Teacher or TA submissions_read, course-scoped filters",
+        "description": "Current durable request collection; stable cursor bound to scope/filter/order, authorization per page. Live status filters require refresh to discover items transitioning behind a previous cursor. No local key required.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          {
+            "name": "validation_state",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "received",
+                "validating",
+                "confirmed",
+                "needs_review",
+                "rejected"
+              ]
+            }
+          },
+          {
+            "name": "assignment_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Must belong to this classroom."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmissionRequestStatusPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deletion-operations/{id}/cancellations": {
+      "post": {
+        "operationId": "cancelDeletionOperation",
+        "summary": "cancel Deletion Operation",
+        "x-authorization": "Institution Admin or time-limited scoped evidence operator grant, expected version; only before destructive-start authorization",
+        "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "$ref": "#/components/parameters/Csrf"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Durable operation accepted; not necessarily completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "headers": {
+              "Idempotent-Replayed": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Durable resource URL when applicable"
+              }
+            }
+          },
+          "400": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "See API.md error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Confirm"
+              }
+            }
+          }
+        }
+      }
+    },
     "/submission-requests/{id}": {
       "get": {
         "operationId": "getSubmissionRequest",
@@ -8522,7 +9041,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SubmissionReceipt"
+                  "$ref": "#/components/schemas/SubmissionRequestStatus"
                 }
               }
             }
@@ -8642,7 +9161,7 @@
       "post": {
         "operationId": "resolveSubmissionRequest",
         "summary": "resolve Submission Request",
-        "x-authorization": "Course teacher, no fake timestamp or invalid SHA",
+        "x-authorization": "Course teacher, request CAS and explicit action; no fake timestamp or invalid SHA",
         "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
         "parameters": [
           {
@@ -8799,7 +9318,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ResolutionInput"
+                "$ref": "#/components/schemas/SubmissionResolutionInput"
               }
             }
           }
@@ -8978,7 +9497,7 @@
       "post": {
         "operationId": "resolveAcademicIncident",
         "summary": "resolve Academic Incident",
-        "x-authorization": "Course teacher, separate evidence",
+        "x-authorization": "Course teacher, incident CAS; never creates a Submission",
         "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
         "parameters": [
           {
@@ -9135,7 +9654,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ResolutionInput"
+                "$ref": "#/components/schemas/IncidentResolutionInput"
               }
             }
           }
@@ -10238,7 +10757,7 @@
       "post": {
         "operationId": "publishGrade",
         "summary": "publish Grade",
-        "x-authorization": "Teacher only, draft/current-grade CAS and retention transaction",
+        "x-authorization": "Teacher only, draft/current-grade CAS and retention transaction; verified deletion requires scoped institutional exception",
         "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
         "parameters": [
           {
@@ -11027,7 +11546,7 @@
       "get": {
         "operationId": "getSnapshot",
         "summary": "get Snapshot",
-        "x-authorization": "Owning student or evidence-authorized staff",
+        "x-authorization": "Owning student or evidence-authorized staff; cancellation operator may read scoped metadata/reference",
         "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
         "parameters": [
           {
@@ -11306,7 +11825,7 @@
       "post": {
         "operationId": "retrySnapshotCapture",
         "summary": "retry Snapshot Capture",
-        "x-authorization": "Teacher or institutional evidence operator, deterministic block resolved",
+        "x-authorization": "Teacher or institutional evidence operator, deterministic block resolved; no retry after verified deletion or active purge fence",
         "description": "RECOMMENDATION. Enforce API.md and SECURITY.md; identifiers do not confer authority.",
         "parameters": [
           {
@@ -14758,7 +15277,9 @@
         "properties": {
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "expected_version": {
             "type": "integer",
@@ -14780,7 +15301,9 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "expected_version": {
             "type": "integer",
@@ -14975,6 +15498,19 @@
           "expires_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "evaluation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draft_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
           }
         },
         "required": [
@@ -14983,6 +15519,35 @@
           "capabilities",
           "classroom_ids",
           "expires_at"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "capabilities": {
+                  "contains": {
+                    "const": "publish_without_retained_code"
+                  }
+                }
+              },
+              "required": [
+                "capabilities"
+              ]
+            },
+            "then": {
+              "required": [
+                "submission_id",
+                "evaluation_id",
+                "draft_version"
+              ],
+              "properties": {
+                "classroom_ids": {
+                  "minItems": 1,
+                  "maxItems": 1
+                }
+              }
+            }
+          }
         ]
       },
       "OrganizationConnect": {
@@ -15273,16 +15838,11 @@
           "academic_identifier": {
             "type": "string",
             "maxLength": 100
-          },
-          "github_account_id": {
-            "type": "string",
-            "format": "uuid"
           }
         },
         "required": [
           "classroom_id",
-          "academic_identifier",
-          "github_account_id"
+          "academic_identifier"
         ]
       },
       "IdentityRequestReceipt": {
@@ -15330,18 +15890,43 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "expected_version": {
             "type": "integer",
             "minimum": 0,
             "maximum": 2147483647
+          },
+          "approval_context": {
+            "type": "string",
+            "maxLength": 1000
           }
         },
         "required": [
           "decision",
           "reason",
           "expected_version"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "decision": {
+                  "const": "approve"
+                }
+              },
+              "required": [
+                "decision"
+              ]
+            },
+            "then": {
+              "required": [
+                "approval_context"
+              ]
+            }
+          }
         ]
       },
       "BindingCorrection": {
@@ -15368,12 +15953,18 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "expected_version": {
             "type": "integer",
             "minimum": 0,
             "maximum": 2147483647
+          },
+          "approval_context": {
+            "type": "string",
+            "maxLength": 1000
           },
           "confirm": {
             "const": true
@@ -15384,6 +15975,7 @@
           "successor_request_id",
           "reason",
           "expected_version",
+          "approval_context",
           "confirm"
         ]
       },
@@ -15575,7 +16167,9 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "expected_version": {
             "type": "integer",
@@ -15682,6 +16276,52 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "extension_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "request_sequence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "timestamp_provenance": {
+            "$ref": "#/components/schemas/TimestampProvenance"
+          },
+          "persistence_recorded_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deadline_status": {
+            "type": "string",
+            "enum": [
+              "known",
+              "no_deadline",
+              "uncertain"
+            ]
+          },
+          "policy_resolution_state": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "needs_review"
+            ]
+          },
+          "candidate_policy_versions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "maxItems": 100
+          },
           "request_id": {
             "type": "string",
             "format": "uuid"
@@ -15754,6 +16394,13 @@
           }
         },
         "required": [
+          "extension_id",
+          "request_sequence",
+          "timestamp_provenance",
+          "persistence_recorded_at",
+          "deadline_status",
+          "policy_resolution_state",
+          "candidate_policy_versions",
           "request_id",
           "acceptance_id",
           "actor_id",
@@ -15765,45 +16412,8 @@
           "validation_state",
           "academic_classification",
           "submission_id"
-        ]
-      },
-      "ResolutionInput": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "classification": {
-            "type": "string",
-            "enum": [
-              "unresolved",
-              "on_time",
-              "late",
-              "exempt",
-              "not_applicable"
-            ]
-          },
-          "reason": {
-            "type": "string",
-            "maxLength": 2000
-          },
-          "evidence_reference": {
-            "type": "string",
-            "maxLength": 1000
-          },
-          "expected_version": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 2147483647
-          },
-          "confirm": {
-            "const": true
-          }
-        },
-        "required": [
-          "classification",
-          "reason",
-          "expected_version",
-          "confirm"
-        ]
+        ],
+        "description": "Immutable original acknowledgement. persistence_recorded_at is the DB persistence-stage sample, not an exact commit timestamp; a receipt exists only after durable commit. Null effective_deadline is interpreted using deadline_status. policy uncertainty remains needs_review."
       },
       "IncidentInput": {
         "type": "object",
@@ -16001,8 +16611,8 @@
           "confirm": {
             "const": true
           },
-          "acknowledge_unavailable_evidence": {
-            "type": "boolean"
+          "deleted_evidence_exception": {
+            "$ref": "#/components/schemas/DeletedEvidenceExceptionInput"
           }
         },
         "required": [
@@ -16010,7 +16620,8 @@
           "expected_grade_generation",
           "expected_publication_id",
           "confirm"
-        ]
+        ],
+        "description": "Verified-deleted evidence blocks ordinary publication. Only teacher with current scoped institutional exception may use deleted_evidence_exception. In-progress purge still conflicts; post-deletion recapture is out of MVP."
       },
       "WithdrawalInput": {
         "type": "object",
@@ -16023,7 +16634,9 @@
           },
           "student_reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "internal_notes": {
             "anyOf": [
@@ -16103,6 +16716,16 @@
           },
           "newer_submission_exists": {
             "type": "boolean"
+          },
+          "latest_request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RequestSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -16112,8 +16735,10 @@
           "publication",
           "latest_submission_revision",
           "evaluated_revision",
-          "newer_submission_exists"
-        ]
+          "newer_submission_exists",
+          "latest_request"
+        ],
+        "description": "latest_submission_revision is max confirmed intake sequence; evaluated_revision belongs only to current publication. latest_request includes pending/rejected. No grade inheritance."
       },
       "GradeHistoryEvent": {
         "type": "object",
@@ -16264,7 +16889,9 @@
         "properties": {
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "responsible_user_id": {
             "type": "string",
@@ -16330,7 +16957,9 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           }
         },
         "required": [
@@ -16466,7 +17095,9 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           }
         },
         "required": [
@@ -16494,7 +17125,9 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "confirm": {
             "const": true
@@ -16721,6 +17354,51 @@
             "minimum": 0,
             "maximum": 2147483647
           },
+          "submission_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evaluation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "draft_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "consumed_publication_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "subject_user_id": {
             "type": "string",
             "format": "uuid"
@@ -16770,6 +17448,10 @@
           "institution_id",
           "created_at",
           "row_version",
+          "submission_id",
+          "evaluation_id",
+          "draft_version",
+          "consumed_publication_id",
           "subject_user_id",
           "issuer_user_id",
           "purpose",
@@ -16874,6 +17556,17 @@
             "minimum": 0,
             "maximum": 2147483647
           },
+          "retention_generation": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "retention_recalculation_pending": {
+            "type": "boolean"
+          },
+          "prior_deletion_claims_exist": {
+            "type": "boolean"
+          },
           "organization_id": {
             "type": "string",
             "format": "uuid"
@@ -16919,6 +17612,9 @@
           "institution_id",
           "created_at",
           "row_version",
+          "retention_generation",
+          "retention_recalculation_pending",
+          "prior_deletion_claims_exist",
           "organization_id",
           "name",
           "slug",
@@ -17099,6 +17795,36 @@
             "minimum": 0,
             "maximum": 2147483647
           },
+          "current_binding_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current_binding_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approval_context": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "requires_broader_authority": {
+            "type": "boolean"
+          },
           "classroom_id": {
             "type": "string",
             "format": "uuid"
@@ -17147,13 +17873,18 @@
           "institution_id",
           "created_at",
           "row_version",
+          "current_binding_id",
+          "current_binding_version",
+          "approval_context",
+          "requires_broader_authority",
           "classroom_id",
           "profile_id",
           "requester_user_id",
           "github_account_id",
           "state",
           "decided_at"
-        ]
+        ],
+        "description": "Opaque approval_context binds inspected profile/enrollment/authority versions without disclosing unauthorized courses."
       },
       "IdentityBinding": {
         "type": "object",
@@ -17472,6 +18203,9 @@
             "minimum": 0,
             "maximum": 2147483647
           },
+          "external_cleanup": {
+            "$ref": "#/components/schemas/ExternalCleanup"
+          },
           "assignment_id": {
             "type": "string",
             "format": "uuid"
@@ -17509,6 +18243,7 @@
           "institution_id",
           "created_at",
           "row_version",
+          "external_cleanup",
           "assignment_id",
           "roster_entry_id",
           "accepted_at",
@@ -17537,6 +18272,12 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 2147483647
+          },
+          "academic_access_allowed": {
+            "type": "boolean"
+          },
+          "external_cleanup": {
+            "$ref": "#/components/schemas/ExternalCleanup"
           },
           "acceptance_id": {
             "type": "string",
@@ -17604,13 +18345,16 @@
           "institution_id",
           "created_at",
           "row_version",
+          "academic_access_allowed",
+          "external_cleanup",
           "acceptance_id",
           "github_repository_id",
           "url",
           "provisioning_state",
           "access_state",
           "sync_state"
-        ]
+        ],
+        "description": "Cleanup is a safe summary; observed_absent requires no unresolved older own grant and an observed_at. No instantaneous external revocation guarantee."
       },
       "Extension": {
         "type": "object",
@@ -17643,7 +18387,9 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "policy_version": {
             "type": "integer",
@@ -17693,7 +18439,7 @@
           },
           "revision": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 1,
             "maximum": 2147483647
           },
           "sha": {
@@ -17743,6 +18489,27 @@
             "minimum": 0,
             "maximum": 2147483647
           },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "reject",
+              "confirm_exception",
+              "reclassify",
+              "resolve_incident"
+            ]
+          },
+          "resulting_request_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "request_id": {
             "anyOf": [
               {
@@ -17781,7 +18548,9 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "supersedes_id": {
             "anyOf": [
@@ -17800,6 +18569,8 @@
           "institution_id",
           "created_at",
           "row_version",
+          "decision",
+          "resulting_request_version",
           "request_id",
           "incident_id",
           "actor_id",
@@ -18037,6 +18808,17 @@
             "minimum": 0,
             "maximum": 2147483647
           },
+          "eligible_deleted_evidence_grant_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "evaluation_id": {
             "type": "string",
             "format": "uuid"
@@ -18093,13 +18875,15 @@
           "institution_id",
           "created_at",
           "row_version",
+          "eligible_deleted_evidence_grant_id",
           "evaluation_id",
           "score",
           "maximum",
           "feedback",
           "internal_notes",
           "completeness"
-        ]
+        ],
+        "description": "eligible_deleted_evidence_grant_id is the eligible exact-scope grant for the current teacher/draft or null; TA gets null. Permission and grant consumption are rechecked on publication."
       },
       "Publication": {
         "type": "object",
@@ -18121,6 +18905,31 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 2147483647
+          },
+          "historical_code_unavailable": {
+            "type": "boolean"
+          },
+          "evidence_explanation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deletion_operation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "acceptance_id": {
             "type": "string",
@@ -18166,6 +18975,9 @@
           "institution_id",
           "created_at",
           "row_version",
+          "historical_code_unavailable",
+          "evidence_explanation",
+          "deletion_operation_id",
           "acceptance_id",
           "evaluation_id",
           "submission_id",
@@ -18212,7 +19024,9 @@
           },
           "student_reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           }
         },
         "required": [
@@ -18246,6 +19060,9 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 2147483647
+          },
+          "deletion_operation": {
+            "$ref": "#/components/schemas/DeletionOperationReference"
           },
           "submission_id": {
             "type": "string",
@@ -18362,7 +19179,8 @@
           "retain_until",
           "deletion_state",
           "content_available"
-        ]
+        ],
+        "description": "deletion_operation is present only for authorized cancellation/evidence operators; supplies the worker operation backlink and inspected deletion-operation version. Student view omits it."
       },
       "RetentionHold": {
         "type": "object",
@@ -18391,7 +19209,9 @@
           },
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "responsible_user_id": {
             "type": "string",
@@ -18574,6 +19394,57 @@
             "minimum": 0,
             "maximum": 2147483647
           },
+          "deletion_operation_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deletion_operation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deletion_phase": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "prepared",
+                  "cancel_pending",
+                  "canceled",
+                  "start_pending",
+                  "destructive_started",
+                  "verified"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "access_cleanup": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExternalCleanup"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "kind": {
             "type": "string",
             "maxLength": 80
@@ -18616,11 +19487,16 @@
           "institution_id",
           "created_at",
           "row_version",
+          "deletion_operation_version",
+          "deletion_operation_id",
+          "deletion_phase",
+          "access_cleanup",
           "kind",
           "state",
           "resource_id",
           "error_code"
-        ]
+        ],
+        "description": "Operation.row_version belongs to the operation projection; cancellation expected_version compares deletion_operation_version, not the queue/outbox version. Details exposed only to scoped operators."
       },
       "Notice": {
         "type": "object",
@@ -18725,6 +19601,552 @@
           "classroom_id",
           "state",
           "expires_at"
+        ]
+      },
+      "DeletionOperationReference": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "row_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "operation_id",
+          "row_version"
+        ]
+      },
+      "TimestampProvenance": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "trusted_backend_full_request"
+            ]
+          },
+          "instance_id": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "clock_status": {
+            "type": "string",
+            "enum": [
+              "trusted",
+              "uncertain"
+            ]
+          },
+          "uncertainty_ms": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sampled_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "context_id": {
+            "type": "string",
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "source",
+          "instance_id",
+          "clock_status",
+          "uncertainty_ms",
+          "sampled_at",
+          "context_id"
+        ]
+      },
+      "ExternalCleanup": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "not_required",
+              "pending",
+              "observed_absent",
+              "blocked"
+            ]
+          },
+          "observed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "unresolved_prior_effects": {
+            "type": "boolean"
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "state",
+          "observed_at",
+          "unresolved_prior_effects",
+          "reason_code"
+        ]
+      },
+      "RequestSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "request_sequence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "validation_state": {
+            "type": "string",
+            "enum": [
+              "received",
+              "validating",
+              "confirmed",
+              "needs_review",
+              "rejected"
+            ]
+          },
+          "submission_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request_id",
+          "request_sequence",
+          "validation_state",
+          "submission_id"
+        ]
+      },
+      "DeletedEvidenceExceptionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "grant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "evidentiary_basis": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "student_explanation": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "grant_id",
+          "reason",
+          "evidentiary_basis",
+          "student_explanation"
+        ]
+      },
+      "SubmissionRequestStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "extension_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "request_sequence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "timestamp_provenance": {
+            "$ref": "#/components/schemas/TimestampProvenance"
+          },
+          "persistence_recorded_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deadline_status": {
+            "type": "string",
+            "enum": [
+              "known",
+              "no_deadline",
+              "uncertain"
+            ]
+          },
+          "policy_resolution_state": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "needs_review"
+            ]
+          },
+          "candidate_policy_versions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "maxItems": 100
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "acceptance_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actor_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sha": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effective_deadline": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assignment_version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policy_version": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "validation_state": {
+            "type": "string",
+            "enum": [
+              "received",
+              "validating",
+              "confirmed",
+              "needs_review",
+              "rejected"
+            ]
+          },
+          "academic_classification": {
+            "type": "string",
+            "enum": [
+              "unresolved",
+              "on_time",
+              "late",
+              "exempt",
+              "not_applicable"
+            ]
+          },
+          "submission_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "row_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "current_resolution_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "extension_id",
+          "request_sequence",
+          "timestamp_provenance",
+          "persistence_recorded_at",
+          "deadline_status",
+          "policy_resolution_state",
+          "candidate_policy_versions",
+          "request_id",
+          "acceptance_id",
+          "actor_id",
+          "sha",
+          "received_at",
+          "effective_deadline",
+          "assignment_version_id",
+          "policy_version",
+          "validation_state",
+          "academic_classification",
+          "submission_id",
+          "row_version",
+          "current_resolution_id"
+        ],
+        "description": "Current request projection; row_version is the mutable request CAS token. Original POST replay remains unchanged."
+      },
+      "SubmissionRejectInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "reject"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "confirm": {
+            "const": true
+          }
+        },
+        "required": [
+          "decision",
+          "reason",
+          "expected_version",
+          "confirm"
+        ]
+      },
+      "SubmissionConfirmExceptionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "confirm_exception"
+            ]
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "on_time",
+              "late",
+              "exempt",
+              "not_applicable"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "evidence_reference": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "confirm": {
+            "const": true
+          }
+        },
+        "required": [
+          "decision",
+          "classification",
+          "reason",
+          "evidence_reference",
+          "expected_version",
+          "confirm"
+        ]
+      },
+      "SubmissionReclassifyInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "reclassify"
+            ]
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "on_time",
+              "late",
+              "exempt",
+              "not_applicable"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "evidence_reference": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "confirm": {
+            "const": true
+          }
+        },
+        "required": [
+          "decision",
+          "classification",
+          "reason",
+          "expected_version",
+          "confirm"
+        ]
+      },
+      "SubmissionResolutionInput": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SubmissionRejectInput"
+          },
+          {
+            "$ref": "#/components/schemas/SubmissionConfirmExceptionInput"
+          },
+          {
+            "$ref": "#/components/schemas/SubmissionReclassifyInput"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "decision"
+        }
+      },
+      "IncidentResolutionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "resolve_incident"
+            ]
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "unresolved",
+              "on_time",
+              "late",
+              "exempt",
+              "not_applicable"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "evidence_reference": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "confirm": {
+            "const": true
+          }
+        },
+        "required": [
+          "decision",
+          "classification",
+          "reason",
+          "expected_version",
+          "confirm"
         ]
       },
       "InstitutionPage": {
@@ -18987,6 +20409,34 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Submission"
+            },
+            "maxItems": 100
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ]
+      },
+      "SubmissionRequestStatusPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionRequestStatus"
             },
             "maxItems": 100
           },

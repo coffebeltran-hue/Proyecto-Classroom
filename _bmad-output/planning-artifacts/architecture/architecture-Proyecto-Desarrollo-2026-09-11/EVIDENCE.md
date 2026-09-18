@@ -4,11 +4,11 @@ Package resumed 2026-09-12 and consolidated 2026-09-13 without restarting the de
 
 ## Approved baseline
 
-DECISION: AD-1–AD-11 in ARCHITECTURE-SPINE.md are approved. Retention/withdrawal/pilot/base-stack questions are closed. Vendor, exact patch versions and compatibility tests were not approved by choosing the stack. AD-12–AD-18 remain proposed engineering contracts. Individual extensions/CSV in proposed MVP are scope recommendations; groups/rubrics remain V1 and authoritative scoring Future.
+DECISION: AD-1–AD-11 in ARCHITECTURE-SPINE.md are approved. Retention/withdrawal/pilot/base-stack questions are closed. On 2026-09-17 Juan adopted AD-5 Option A full-request trusted ingress timing and AD-7 Option C scoped institutional exception after verified deletion, with post-deletion recapture OUT OF MVP. Documentary repair scope is approved; AD-12–18 statuses remain proposed. Vendor, exact patch versions and compatibility tests were not approved by choosing the stack. AD-12–AD-18 remain proposed engineering contracts. Individual extensions/CSV in proposed MVP are scope recommendations; groups/rubrics remain V1 and authoritative scoring Future.
 
-## Candidate dependency evidence
+## Historical candidate dependency evidence
 
-The existing [stack research](reviews/STACK-RESEARCH.md) retains original sources and dates; it is documentary research, not a lockfile or runtime test. Prefer stable supported releases over prereleases. The following pins are RECOMMENDATION, not proof of combined compatibility.
+The existing [stack research](reviews/STACK-RESEARCH.md) retains original sources and dates; it is documentary research, not a lockfile or runtime test. Prefer stable supported releases over prereleases. The following historical pins are RECOMMENDATION, not proof of combined compatibility. The executed 2026-09-17 baseline in [RR-01](reviews/RR-01.md) supersedes these candidate versions for the authorized bootstrap; historical research remains preserved.
 
 | Component | Candidate | Evidence/remaining constraint |
 | --- | --- | --- |
@@ -55,23 +55,23 @@ Maintenance evidence is release activity and published requirements, not a futur
 | Workflow execution | GitHub | Formative run/attempt/result interpretation in PostgreSQL |
 | Evaluation/draft/publication/withdrawal | PostgreSQL | Revision-specific immutable official history; no automatic Actions publication |
 | Delivery of jobs | pg-boss | Business effects and evidence tracked separately in outbox/domain |
-| Deletion after restore | Current tombstone journal + DB operation history | Journal must be independently restorable before access reopens |
+| Deletion after restore | Current ordered deletion journal + DB operation history | Prepared/canceled/start-authorized/verified with completeness/readback; ambiguous replay quarantines and old environment fenced before access reopens |
 
 ## Concrete recommendations not separately approved
 
 | ID | RECOMMENDATION | Review concern |
 | --- | --- | --- |
-| R-01 | Server-bound preview, five-minute TTL, eligibility means observed on configured branch at preview | Does not prove continuous membership at receipt. Review temporal policy before implementing confirmation; uncertain cases remain needs_review |
+| R-01 | Server-bound preview, five-minute TTL, historical branch observation remains PROPOSED; evaluate TTL at received_at, not worker time | Does not prove continuous membership at receipt. Review temporal policy before implementing confirmation; uncertain cases remain needs_review |
 | R-02 | Tenant composite FKs + forced RLS and separate worker profiles/DB roles | Same-tenant cross-course constraints and maintenance privileges need tests |
-| R-03 | One active user/account to one academic identity per institution; cross-course correction grant | Stricter than approved per-profile uniqueness; requires package acceptance, not silently adopted |
+| R-03 | Reverse active user/account uniqueness remains proposed; approved repair applies all-affected-course authority/grant to every activation including first multi-course/reapproval | Stricter than approved per-profile uniqueness; requires package acceptance, not silently adopted |
 | R-04 | AWS S3 private per-environment bucket; authenticated streaming; immutable object keys | Account/region/budget/deletion evidence unresolved |
 | R-05 | Frozen same-org versioned templates plus generated-content verification | Additional permissions/mechanism may be needed if GitHub cannot reproduce expected tree |
 | R-06 | Eight transient retries/max 24 hours; 5 MiB webhook/report bound; 5,000-row CSV | Configurable engineering defaults; observe data before widening |
 | R-07 | numeric(12,2) cap; 12-hour absolute/1-hour idle session; npm workspaces | Added bounded mechanics, not approved permanent product limits |
 | R-08 | Individual extension and CSV export in MVP; template-only private repos | Scope additions/restrictions for review; no claim user approved separately |
 | R-09 | Calendar-month anniversary using course timezone; clamp month-end | Retention calculation timezone semantics need package review; receipt remains UTC |
-| R-10 | Purge fence conflicts with publication/hold; explicit acknowledgement if publishing after verified deletion | Avoid pretend recovery; independent review must challenge user experience and evidence availability |
-| R-11 | Minimal in-app notices and scoped grants; no external email integration | Operational alerts must have a responsible reader |
+| R-10 | AD-7 adopted clarification supersedes acknowledgement-only proposal: ordinary verified-deleted publication blocked, scoped institutional exception to teacher required; purge fence still conflicts; no MVP recapture | Preserve immutable scope/authorizer/publisher/reason/basis/safe explanation and deletion history; no restored bytes/retroactive byte retention; RR-05 remains open |
+| R-11 | Product notices remain in-app; approved repair adds independent incident observer/delivery using existing hosting where sufficient, no product email subsystem | Named owner/independent route and detection bound need OQ-10/13 and RR-07; not implemented |
 
 ## Assumptions
 
@@ -92,7 +92,7 @@ Previous OQ-1..OQ-7 policy questions were closed by approvals or converted into 
 
 | ID | RESEARCH REQUIRED | Proof needed / owner | Gate |
 | --- | --- | --- | --- |
-| RR-01 | Exact dependency artifact/engines/peers, driver/typings/Fastify plugins, maintenance and advisories | Frozen lockfile resolution, build/typecheck, licenses/SBOM; Amelia | Before implementation baseline accepted; requires separately authorized technical spike |
+| RR-01 — PASS | Coherent installable baseline verified under Juan’s scoped authorization; exact pins, strict install/imports and advisory/license evidence | [Executed RR-01 record](reviews/RR-01.md); final executable checks in implementation-preparation report | Bounded bootstrap authorized; this closes no queue/provider/pilot gate |
 | RR-02 | PostgreSQL 18.6 + pg-boss 12.31.0/schema 41 under restricted roles | Empty/upgrade migration, queue lifecycle/partition maintenance, restart/concurrency/restore; Amelia/Winston | Before integrated implementation relies on queue |
 | RR-03 | GitHub App authorization/install scope/templates/collaborators/webhooks/Actions | Dedicated sandbox accounts and least-privilege end-to-end evidence; Winston/Amelia | Before integration design marked proven |
 | RR-04 | Temporal preview evidence and needs_review rules under force-push/delay/outage | Adversarial protocol assessment then sandbox tests; Mary/Winston | Before submission confirmation implementation |
@@ -104,3 +104,15 @@ Previous OQ-1..OQ-7 policy questions were closed by approvals or converted into 
 ## Risks and dispositions
 
 High-impact risks remain reviewable, not hidden by open-question labels: R-01 temporal evidence could be weaker than intended; same-org frozen template may drift; account correction can affect multiple courses and external permissions; queue least-privilege may conflict with internal DDL; quota blocks may allow source to disappear before capture; purge may race a new publication; provider backup guarantees may prevent verified deletion within desired time. Controls are in STATE-MACHINES/GITHUB/OPERATIONS/SECURITY, experiments in RR list. No risk has been declared eliminated by documentation alone.
+
+## Repair evidence disposition — 2026-09-17
+
+FACT: independent Anti-Consensus review completed with 11 documentary findings (6 HIGH, 5 MEDIUM); its unchanged artifacts remain the original snapshot, not a claim about this repaired version. Juan authorized documentary repairs, AD-5 ingress clarification and AD-7 exceptional-publication policy. All ACRs are addressed in design subject to consistency/targeted re-review, NOT operationally closed. See [repair changelog](reviews/repair/REPAIR-CHANGELOG.md) for exact mappings and validation results.
+
+AD-5 clock/policy provenance and pre-wait fairness are adopted. Policy activation intervals/epochs and clock-uncertainty handling are engineering mechanisms pending RR-04 proof, not demonstrated exact commit clocks. R-01 historical branch-observation/TTL is still proposed and confirmation eligibility remains gated. AD-7 exception scopes course/submission/evaluation/draft and resulting publication; grants do not give institutional actors publication authority. Post-deletion recapture is out of MVP.
+
+RESEARCH REQUIRED: ACR-002 delayed remote grant/invitation recovery under RR-03; ACR-003/004 ordered cancel/start journal, reopen and recovery under RR-05; ACR-007 fair refund/reclaim sweep under RR-06; ACR-011 independent detection under RR-07. All other ACR repairs retain DB/API/E2E tests. OQ-10–13 and RR-01–08 are unchanged as open identifiers; their existing gates remain. Runtime/provider experiments were not authorized or executed. No version pins were silently refreshed by this repair.
+
+## 2026-09-17 scoped implementation authorization
+
+DECISION: after [targeted re-review](reviews/repair/TARGETED-REVIEW.md) passed all 11 documentary repairs, Juan explicitly authorized RR-01, implementation preparation and initial executable bootstrap on RR-01 success. Earlier no-implementation statements describe the prior gate; they do not override this later bounded authorization. No business features, academic schema, queue lifecycle, GitHub/cloud resources or production deployment are authorized here. AD-12–18 remain PROPOSED, R-01 unadopted, OQ-10–13 open, RR-02–07 open and RR-08 Future only. Current selected pg-boss12.33.1/PostgreSQL18.6 must be the RR-02 test baseline; older candidate schema/version statements are not runtime proof.

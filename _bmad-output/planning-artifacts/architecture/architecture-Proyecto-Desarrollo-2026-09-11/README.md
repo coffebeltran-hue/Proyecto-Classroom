@@ -1,6 +1,6 @@
 # Preimplementation architecture package
 
-Prepared for Juan and the delivery team; original run 2026-09-11, consolidation resumed and completed 2026-09-13. No application code, infrastructure, database or GitHub resources have been created. Implementation requires a separate user authorization.
+Prepared for Juan and the delivery team; original run 2026-09-11, consolidation completed 2026-09-13, bounded documentary repairs applied 2026-09-17 following Juan approval. At that checkpoint no implementation was authorized. Juan subsequently authorized RR-01 and the initial executable bootstrap after the [targeted review](reviews/repair/TARGETED-REVIEW.md) passed. [RR-01 evidence](reviews/RR-01.md) records the selected baseline. This bounded authorization excludes business features, academic migrations, queue/provider integration and production infrastructure; all other gates and proposed AD statuses remain.
 
 ## Read this package
 
@@ -14,7 +14,7 @@ Prepared for Juan and the delivery team; original run 2026-09-11, consolidation 
 8. [API contract](openapi.json): OpenAPI 3.1 design artifact; [API semantics](API.md) describes concurrency and authorization rules.
 9. [Validation and delivery](DELIVERY.md): test scenarios, roadmap, deployment and Definition of Done.
 10. [Evidence and open items](EVIDENCE.md): researched versions, assumptions, recommendations and release gates.
-11. [Review preparation and gate](REVIEW.md): consistency checks, their limits and the pending independent adversarial gate.
+11. [Review preparation and gate](REVIEW.md): historical consistency checks and their limits; the completed targeted re-review is linked above.
 
 The older [DISCUSSION.md](DISCUSSION.md) is historical working material, superseded by this package where recommendations evolved. The append-only [.memlog.md](.memlog.md) preserves decision history. This package never promotes a recommendation to user approval.
 
@@ -48,3 +48,9 @@ Vision: teachers operate a programming course from verified roster to published 
 | Authoritative autograding, protected tests | Future independent trust boundary, never an MVP switch | AD-1, SECURITY |
 
 The full-product group E2E requirement applies at V1, not as a claim that the MVP supports groups. Public/internal student repositories, Git hard cutoff, automatic official scoring, Redis and microservices are outside this proposed MVP.
+
+## Current repair status — 2026-09-17
+
+The [original Anti-Consensus review](reviews/anti-consensus/ANTI-CONSENSUS-REPORT.md) is complete and unchanged: PASS WITH REQUIRED FIXES, 6 HIGH/5 MEDIUM. Juan approved the [bounded repair proposal](reviews/repair/REPAIR-PROPOSAL.md) and explicitly selected AD-5 ingress timing and AD-7 scoped institutional exception; the proposal's pending-approval language is historical. [Repair changelog](reviews/repair/REPAIR-CHANGELOG.md) maps all 11 ACRs to corrected contracts and pending proofs. [Repair checks](reviews/repair/REPAIR-CHECKS.json) distinguish structural validation from runtime proof.
+
+Current OpenAPI: 85 paths, 97 operations, 112 schemas. AD-1–11 remain adopted with explicit AD-5/7 clarifications; AD-12–18 remain PROPOSED. R-01 remains unadopted; OQ-10–13/RR-01–08 remain open. Post-deletion recapture is OUT OF MVP. No ACR is operationally closed. Corrected package is prepared for targeted independent Anti-Consensus re-review; implementation and provider/runtime experiments remain unauthorized.

@@ -14,7 +14,8 @@ Legend: Y scoped permission; C explicit course capability; O own verified identi
 | Edit course / roster / publish assignment | — | — | Y own course | C roster_read only | — |
 | Read roster | BG | C support grant | Y | C roster_read | O own profile only |
 | Request identity link | — | — | — | — | O authenticated request |
-| Approve/reject identity | — | — | Y scoped roster | — | — |
+| Activate/reapprove identity | — | Authorize scoped teacher grant only | Y all affected courses or scoped grant | — | — |
+| Reject identity request | — | — | Y request course | — | — |
 | Correct institution-wide binding | BG authorizes grant | Authorize scoped teacher grant | Y all affected courses or explicit grant | — | Request only |
 | Accept assignment / submit | — | — | — | — | O active verified enrollment |
 | Read submission/test results | BG | C support grant | Y | C submissions_read | O |
@@ -27,6 +28,11 @@ Legend: Y scoped permission; C explicit course capability; O own verified identi
 | Place/release retention hold | BG | Y scoped | Y own-course evidence | — | Request only |
 | Change quotas / retention policy | BG | Y | Request only | — | — |
 | Academic close | — | Y | Y own course | — | — |
+| Discover durable submission requests | BG scoped read | C support grant | Y own course | C submissions_read | O current authorized acceptance |
+| Resolve submission request | — | — | Y teacher, explicit decision + CAS | — | — |
+| Grant deleted-code publication exception | BG authorizes scoped institution action | Y exact scope to teacher | — | — | — |
+| Publish using deleted-code exception | — | — | Y current teacher plus exact institutional grant | — | — |
+| Cancel deletion before start authorization | BG explicit evidence grant | Y scoped | C explicit evidence-operator grant only | — | — |
 | Run automatic purge | — | — | — | — | — |
 
 Automatic purge is retention worker authority under policy/fence, not an interactive role. Global super admin does not see all grades by default. Support grants specify tenant, resources, purpose and expiry. Last active teacher cannot remove themselves until replacement is assigned. Membership changes invalidate authorization caches; every sensitive command rereads effective authorization transactionally.
@@ -44,7 +50,7 @@ Pre-binding identity intake is a narrow exception to membership-gated reads: a l
 | Threat / entry | Impact | Mitigation and verification |
 | --- | --- | --- |
 | Known student code/name/invite | Claim someone else's identity | Teacher approval; non-enumerating request; rate limit; two-approval race test |
-| Teacher limited to one course corrects shared identity | Cross-course takeover | All-affected-course scope or explicit institutional correction grant; immutable lineage |
+| Teacher limited to one course corrects shared identity | Cross-course takeover | All activations including initial multi-course/reapproval use affected-course scope or institutional teacher grant; stable profile/enrollment/context CAS; immutable lineage |
 | IDOR through API/export/download | Cross-tenant grade/source disclosure | Resource-scoped authorization, composite FK/RLS, opaque object identity, negative E2E |
 | OAuth login CSRF/account mixup | Wrong user session or org binding | PKCE/state/browser binding; re-read user; explicit install-owner verification |
 | Forged/replayed webhook | State corruption/jobs exhaustion | HMAC raw-body verification; bounded inbox; delivery uniqueness plus domain idempotency |
@@ -54,8 +60,8 @@ Pre-binding identity intake is a narrow exception to membership-gated reads: a l
 | Token or private key leak | Repository compromise | Secret manager, minimal scoped tokens, credential rotation; audited incident revocation |
 | Broad org base/owner access | Peer repository disclosure | Dedicated org preflight, no student owner/admin/base read, effective access audit; prevent incompatible onboarding |
 | Deleted repo or revoked App | Lost academic evidence | Snapshot preservation; sync inaccessible state; no destructive compensation |
-| Publication/purge race | Evidence deleted despite extension | Shared row lock/fence; reject conflicting publication/hold after destructive claim; audit outcome |
-| Restore older DB/object backup | Revived deleted source | Independent tombstone journal replay before access/readiness |
+| Publication/purge race | Evidence deleted despite extension | Shared classroom-before-snapshot lock/fence; reject conflicting publication/hold after purge claim; audit outcome |
+| Restore older DB/object backup | Revived deleted source | Independent ordered prepared/canceled/start-authorized/verified journal replay, old environment fenced, ambiguity quarantined before access/readiness |
 | Grade precision coercion | Incorrect official score | Decimal strings, exact arithmetic, backend lexical validation, SQL checks and precision tests |
 | CSV formula injection / stored HTML | Spreadsheet execution or XSS | Formula-safe export, bounded parser, plain/sanitized text render, CSP |
 | High-volume accept/submit/archive | Resource and quota exhaustion | Per-actor/tenant throttles, reservations, queue fairness and configured size limits |
@@ -77,3 +83,19 @@ Provider comparison: S3 offers a documented version/deletion model; R2 may be co
 ## Future authoritative grading
 
 An evaluator independent from the student's repository must bind request, exact source digest/SHA, test-package version, evaluator version and policy version to authenticated results. Orchestrator credentials cannot enter student execution. Protect test/scoring controller from source tampering and output/network exfiltration; a private repo or signature on a student-generated report is insufficient. Policy authority validates evidence before publication. Do not add a boolean trust bypass to the formative pipeline. [GitHub secure workflow use](https://docs.github.com/en/actions/reference/security/secure-use).
+
+## Authorized repair security invariants — 2026-09-17
+
+ACR-001/008: one transition-based activation policy covers initial approval, reapproval and correction. Teacher must cover every course whose current access changes, or hold an explicit scoped institutional grant; stable profile lock and inspected approval_context prevent narrower reapproval and enrollment races. Rejecting a request needs only its course. Binding/account selection is server-derived and predecessor/history immutable. Context tokens are opaque tamper-resistant references to server-owned snapshots, not authority; inaccessible courses are not enumerated. Staff request lists include only current authorized context. OQ-12 historical access remains an unresolved separate input, denied until explicitly supported.
+
+ACR-002: revoke platform access transactionally; track potentially issued external attempts per old/new account. Generation rejects stale local completion, not a provider request already sent. Unknown old attempts prevent external-cleanup completion even after observed absence; recurring collaborator/invitation inspection and cleanup continues with escalation. No credentials in attempt API responses/logs. RR-03 tests minimum endpoint permissions; no Contents/Workflows/Actions write expansion.
+
+ACR-003/004: cancellation requires institution admin or a scoped time-limited evidence-operator grant; teacher role alone is not cancellation permission. The cancellation command uses reason/confirmation/version/idempotency. Start authorization and cancellation compete under the same fence; no completed cancellation before independent journal durability. Complete journal readback/inventory and old-worker/credential fencing precede restore access. Shared classroom lock prevents reopened-course stale claims; no role bypasses an active deletion fence.
+
+AD-7 exception is an allowlisted purpose-specific institutional grant, not general grade capability. Exact course/submission/evaluation/draft version and teacher subject are required; one successful publication consumes it. Ordinary publication after verified deletion is denied. A revoked/expired/wrong-scope grant or nonteacher fails even if the identifier is known. Institution admin cannot publish through this mechanism. Publication transaction snapshots authorizer, publisher, reason, remaining basis, deletion reference and safe explanation immutably. Student projection excludes internal reason/basis; safe explanation must explicitly disclose unavailable historical code. Post-deletion recapture and redownload to evade state are OUT OF MVP.
+
+ACR-006/009/010: acceptance request list is owner/current-policy or scoped staff; classroom list is teacher/TA submissions_read, optional assignment filter constrained to that classroom. Tenant and cursor values never authorize a query. Teacher-only reject/confirm_exception/reclassify compares the current request version; incident resolution cannot confirm a receipt. Invalid identity/SHA remains invalid regardless of timing exception. Receipt provenance and policy uncertainty are immutable evidence, not trusted caller timestamps.
+
+ACR-011: external monitoring has only minimal health/metric access and its own incident delivery/credentials; no academic DB write/read credential or student payload. Detect missing telemetry/progress as well as failing processes. Operator coverage and real failure delivery remain OQ-10/13 and RR-07, not a proven uptime guarantee.
+
+ACR-003 read prerequisite: a scoped cancellation operator may read the matching snapshot metadata and deletion_operation reference even without academic grading authority; scope must cover the exact evidence. Student and unprivileged staff omit that optional field. AD-7 grant discovery uses existing draft-grade read: eligible_deleted_evidence_grant_id is null for TA and for absent, expired, revoked, consumed or wrong-scope grant; only the currently authorized publishing teacher sees an eligible ID. Neither read grants mutation authority.

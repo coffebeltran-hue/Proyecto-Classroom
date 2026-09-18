@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2023", "module": "NodeNext", "moduleResolution": "NodeNext",
+    "strict": true, "skipLibCheck": true, "declaration": true,
+    "rootDir": ".", "outDir": ".local/build", "types": ["node"],
+    "paths": {
+      "@classroom/shared": ["./packages/shared/src/index.ts"],
+      "@classroom/database": ["./packages/database/src/index.ts"]
+    }
+  },
+  "include": ["apps/api/src", "apps/worker/src", "packages/*/src", "tests/unit", "vitest.config.ts", "playwright.config.ts", "tests/e2e"]
+}

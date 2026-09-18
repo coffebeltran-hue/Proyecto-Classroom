@@ -1,0 +1,43 @@
+{
+  "name": "classroom-platform",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": "24.21.0",
+    "npm": "11.19.0"
+  },
+  "packageManager": "npm@11.19.0",
+  "scripts": {
+    "dev:api": "node --env-file-if-exists=.env --conditions=development --import tsx apps/api/src/main.ts",
+    "dev:web": "vite --config apps/web/vite.config.ts",
+    "dev:worker": "node --env-file-if-exists=.env --conditions=development --import tsx apps/worker/src/main.ts",
+    "typecheck": "tsc --noEmit && tsc -p apps/web/tsconfig.json --noEmit",
+    "build": "node scripts/build.mjs",
+    "start:api": "node --env-file-if-exists=.env apps/api/dist/main.js",
+    "start:worker": "node --env-file-if-exists=.env apps/worker/dist/main.js",
+    "db:check": "node --env-file-if-exists=.env --conditions=development --import tsx packages/database/src/check.ts",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "vite": "8.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "drizzle-kit": "0.31.10",
+    "@types/pg": "8.23.1",
+    "vitest": "5.0.1",
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.13.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "tsx": "4.23.13"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "version": "0.0.0"
+}

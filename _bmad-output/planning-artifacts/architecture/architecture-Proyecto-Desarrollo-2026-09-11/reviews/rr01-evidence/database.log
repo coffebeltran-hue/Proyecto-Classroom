@@ -1,0 +1,6 @@
+
+> db:check
+> node --env-file-if-exists=.env --conditions=development --import tsx packages/database/src/check.ts
+
+.env not found. Continuing without it.
+Database connection check passed (SELECT only)

@@ -1,0 +1,6 @@
+
+> start:worker
+> node --env-file-if-exists=.env apps/worker/dist/main.js --smoke
+
+.env not found. Continuing without it.
+Worker idle: no database, queue or GitHub activity

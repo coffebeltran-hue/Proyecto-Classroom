@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-17",
+  "original_inputs_checked": 19,
+  "changed_originals": [],
+  "required_artifacts_missing": [],
+  "markdown_files_checked": 14,
+  "local_links_checked": 34,
+  "broken_links_or_fences": [],
+  "canonical_findings": [
+    "ACR-001",
+    "ACR-002",
+    "ACR-003",
+    "ACR-004",
+    "ACR-005",
+    "ACR-006",
+    "ACR-007",
+    "ACR-008",
+    "ACR-009",
+    "ACR-010",
+    "ACR-011"
+  ],
+  "severity_counts": {
+    "CRITICAL": 0,
+    "HIGH": 6,
+    "MEDIUM": 5,
+    "LOW": 0,
+    "INFO": 0
+  },
+  "attack_rows": 52,
+  "runtime_tests_executed": false,
+  "implementation_authorized": false,
+  "limitations": [
+    "File-link checks do not validate anchor/rendered Mermaid",
+    "Document review is not executed security/concurrency/provider proof"
+  ],
+  "ok": true
+}

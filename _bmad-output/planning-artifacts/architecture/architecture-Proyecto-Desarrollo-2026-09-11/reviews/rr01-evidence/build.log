@@ -1,0 +1,14 @@
+
+> build
+> node scripts/build.mjs
+
+vite v8.3.0 building client environment for production...
+transforming...
+✓ 15 modules transformed.
+rendering chunks...
+computing gzip size...
+apps/web/dist/index.html                   0.36 kB │ gzip:  0.26 kB
+apps/web/dist/assets/index-D2GXpU4B.css    0.47 kB │ gzip:  0.31 kB
+apps/web/dist/assets/index-C3fzPlK-.js   220.58 kB │ gzip: 69.09 kB
+
+✓ built in 414ms
