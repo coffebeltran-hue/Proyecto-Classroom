@@ -1,0 +1,37 @@
+[
+  {
+    "run": "rr02_1789733606644_e1dbaa",
+    "status": "pass-exploratory",
+    "reason": "Broader queue grants; simulated connection-loss crash",
+    "file": "rr02_1789733606644_e1dbaa.json",
+    "sha256": "69802535958205b4f236b8154662a1771113c70e5965ba5f1dbb78af9fa1bb81"
+  },
+  {
+    "run": "rr02_1789733670702_b4c1e6",
+    "status": "pass-exploratory",
+    "reason": "Broader queue grants; real killed process and handler timeout",
+    "file": "rr02_1789733670702_b4c1e6.json",
+    "sha256": "d61629ddbb7c46a42de1c000460ab8a9a3e9dd57126d46c906999ed0fb855d84"
+  },
+  {
+    "run": "rr02_1789733779300_3073df",
+    "status": "fail",
+    "reason": "Incorrect hard-coded expected default-ACL row count (expected 5; actual 4). Retained; no database runtime failure concealed.",
+    "file": "rr02_1789733779300_3073df.json",
+    "sha256": "36e65c0313af61589b9564926d21ba9b69b27eced27de7c6c0ddf203eecb67ec"
+  },
+  {
+    "run": "rr02_1789733826104_6251f6",
+    "status": "pass",
+    "reason": "Narrow runtime grants and negatives; owner maintenance; forced crash, timeout, graceful stop; restore",
+    "file": "rr02_1789733826104_6251f6.json",
+    "sha256": "ef9938196a3b440dcb244bdd06a385af55466b64de8b871892883530984bf627"
+  },
+  {
+    "run": "rr02_1789733917336_f3f17b",
+    "status": "pass-final",
+    "reason": "Final source fingerprints; removed unnecessary queue owner CREATE grant in restore database; otherwise same proof",
+    "file": "rr02_1789733917336_f3f17b.json",
+    "sha256": "cdc764da51abff22bcde22a0664fe8c1a0f2e89cc7032caf84551f4d5b1023c6"
+  }
+]

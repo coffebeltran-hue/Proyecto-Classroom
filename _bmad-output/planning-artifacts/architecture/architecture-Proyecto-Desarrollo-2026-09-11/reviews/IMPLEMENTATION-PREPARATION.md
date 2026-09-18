@@ -66,3 +66,9 @@ Only focused source/acceptance checks were performed; no broad multi-agent revie
 **Recommended first vertical slice:** GitHub sign-in → current-user/session read → signed-in frontend → logout, with an explicit “academic identity not linked” state and no academic authorization inferred from GitHub membership. First authorize the narrow RR-03 sandbox/auth work and disposition the applicable proposed session/identity contracts; do not implement around missing provider authority. Full roster/linking/submissions remain later slices.
 
 **STOP:** executable foundation is complete within this scope. No first substantial business feature, cloud resource, academic migration or queue/provider integration is authorized by this report.
+
+## Current infrastructure gate — 2026-09-18
+
+Juan subsequently authorized bounded RR-02 infrastructure implementation and disposable local experiments. [RR-02 PASS](RR-02.md) supersedes the earlier pending queue-baseline bullet: PostgreSQL 18.6/pg-boss 12.33.1 schema 42 passed restricted-role, migration/replay/rollback, queue maintenance/lifecycle/crash/retry and same-cluster logical restore checks. Typecheck/build and Vitest 6/6 passed; frontend/API behavior was unchanged and Playwright was deliberately not repeated. Dependency graph unchanged; no repeat RR-01 installation.
+
+This does not wire business jobs into the idle worker or adopt AD-12–18. Separate owner credentials and explicit maintenance execution were proved, not a hosting scheduler. Real upgrade, production/PITR, load, provider and ACR proofs remain pending. RR-03–07/OQ-10–13 open, RR-08 Future, R-01 unadopted. Next recommended gate is separately authorized RR-03; no business feature or provider resource was started.

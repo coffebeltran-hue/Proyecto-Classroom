@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-18",
+  "finalRun": "rr02_1789733917336_f3f17b",
+  "proofGroups": 11,
+  "allProofGroupsPassed": true,
+  "sourceFingerprintsChecked": 8,
+  "sourceHashMismatches": [],
+  "localLinksChecked": 48,
+  "missingLinks": [],
+  "changedFilesScanned": 26,
+  "localAdminPasswordMatches": [],
+  "scope": "Focused evidence/source/link/secret consistency only; not another runtime or broad architecture review.",
+  "ok": true
+}

@@ -1,0 +1,465 @@
+{
+  "run": "rr02_1789733917336_f3f17b",
+  "names": {
+    "db": "rr02_1789733917336_f3f17b_db",
+    "restore": "rr02_1789733917336_f3f17b_restore",
+    "owner": "rr02_1789733917336_f3f17b_owner",
+    "qowner": "rr02_1789733917336_f3f17b_qowner",
+    "migration": "rr02_1789733917336_f3f17b_migration",
+    "maintenance": "rr02_1789733917336_f3f17b_maintenance",
+    "api": "rr02_1789733917336_f3f17b_api",
+    "worker": "rr02_1789733917336_f3f17b_worker"
+  },
+  "checks": [
+    {
+      "name": "fingerprints",
+      "status": "pass",
+      "details": {
+        "node": "v24.21.0",
+        "postgres": {
+          "server_version": "18.6"
+        },
+        "files": {
+          "package-lock.json": "e7f8f02867ad56f38bb4ab20c7443faf0c45c3473cccef4acb267ceaba16c15b",
+          "scripts/rr02-proof.mjs": "e742f63d043d30ecab45ea06d289aa84836cb1c4aa04237d9c9f9f8865f5e625",
+          "scripts/rr02-crash-child.mjs": "d09eebfe1730370e711fe35efca868e9258cdf5fc824ff0413fe71317695da3a",
+          "apps/worker/src/infrastructure.ts": "847de2fd11d9d210f2679a53814d303afd928902e2885b39771f7ba0c4456070",
+          "node_modules/pg-boss/dist/contractor.js": "cbe71733f456f6934b00e8bb99b1a2cde7ab0a2dab8decf53b47725255a55ac6",
+          "node_modules/pg-boss/dist/plans.js": "64ab4b5d77fb8b800b93f17b72b59350b446e45ba0d9b94394c5dc753f06d561",
+          "node_modules/drizzle-orm/pg-core/dialect.js": "a7d7921c939b228a3f1295be5f024a8c264169e368f591c2d29072ffe079b14e",
+          "packages/database/rr02/migrations/0000_slow_leech.sql": "eed69533a2a3a30e32e05b5493a176c41051a3e6063f6ad4a2b4696fb6e9bff3"
+        },
+        "packages": {
+          "pg": "8.23.0",
+          "pg-boss": "12.33.1",
+          "drizzle-orm": "0.45.2",
+          "drizzle-kit": "0.31.10"
+        },
+        "schema": 42
+      }
+    },
+    {
+      "name": "provision",
+      "status": "pass"
+    },
+    {
+      "name": "migration-first-replay-rollback",
+      "status": "pass",
+      "details": {
+        "journalRows": 1,
+        "journalHash": "eed69533a2a3a30e32e05b5493a176c41051a3e6063f6ad4a2b4696fb6e9bff3",
+        "releaseGuard": "advisory serialization; immutable reviewed migration hash captured; Drizzle does not validate historical hash drift"
+      }
+    },
+    {
+      "name": "queue-provision",
+      "status": "pass",
+      "details": {
+        "functions": [
+          {
+            "proname": "create_queue",
+            "prosecdef": false
+          },
+          {
+            "proname": "delete_queue",
+            "prosecdef": false
+          },
+          {
+            "proname": "job_now",
+            "prosecdef": false
+          },
+          {
+            "proname": "job_table_format",
+            "prosecdef": false
+          },
+          {
+            "proname": "job_table_run",
+            "prosecdef": false
+          },
+          {
+            "proname": "job_table_run_async",
+            "prosecdef": false
+          }
+        ],
+        "functionSecurity": "all invoker; executing DDL functions still requires owner privileges"
+      }
+    },
+    {
+      "name": "runtime-boundaries",
+      "status": "pass",
+      "details": {
+        "roles": [
+          {
+            "rolname": "rr02_1789733917336_f3f17b_api",
+            "rolsuper": false,
+            "rolcreatedb": false,
+            "rolcreaterole": false,
+            "rolreplication": false,
+            "rolbypassrls": false
+          },
+          {
+            "rolname": "rr02_1789733917336_f3f17b_worker",
+            "rolsuper": false,
+            "rolcreatedb": false,
+            "rolcreaterole": false,
+            "rolreplication": false,
+            "rolbypassrls": false
+          }
+        ],
+        "owners": [
+          {
+            "nspname": "drizzle",
+            "relname": "__drizzle_migrations",
+            "owner": "rr02_1789733917336_f3f17b_owner",
+            "relacl": null
+          },
+          {
+            "nspname": "drizzle",
+            "relname": "__drizzle_migrations_id_seq",
+            "owner": "rr02_1789733917336_f3f17b_owner",
+            "relacl": null
+          },
+          {
+            "nspname": "drizzle",
+            "relname": "__drizzle_migrations_pkey",
+            "owner": "rr02_1789733917336_f3f17b_owner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "bam",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "bam_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": "{rr02_1789733917336_f3f17b_qowner=arwdDxtm/rr02_1789733917336_f3f17b_qowner,rr02_1789733917336_f3f17b_worker=arwd/rr02_1789733917336_f3f17b_qowner}"
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": "{rr02_1789733917336_f3f17b_qowner=arwdDxtm/rr02_1789733917336_f3f17b_qowner,rr02_1789733917336_f3f17b_worker=arwd/rr02_1789733917336_f3f17b_qowner}"
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i1",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i10",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i11",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i2",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i3",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i4",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i6",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i7",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i8",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_i9",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_common_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_dep_parent_idx",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_dependency",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_dependency_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "job_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": "{rr02_1789733917336_f3f17b_qowner=arwdDxtm/rr02_1789733917336_f3f17b_qowner,rr02_1789733917336_f3f17b_worker=r/rr02_1789733917336_f3f17b_qowner}"
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats_20260918",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats_20260918_name_captured_on_deferred_count_queued_idx",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats_20260918_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats_20260919",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats_20260919_name_captured_on_deferred_count_queued_idx",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats_20260919_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats_i1",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "queue_stats_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "schedule",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "schedule_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "subscription",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "subscription_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "version",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": "{rr02_1789733917336_f3f17b_qowner=arwdDxtm/rr02_1789733917336_f3f17b_qowner,rr02_1789733917336_f3f17b_worker=r/rr02_1789733917336_f3f17b_qowner}"
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "version_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "warning",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "warning_i1",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "pgboss",
+            "relname": "warning_pkey",
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "relacl": null
+          },
+          {
+            "nspname": "rr02_proof",
+            "relname": "marker",
+            "owner": "rr02_1789733917336_f3f17b_owner",
+            "relacl": "{rr02_1789733917336_f3f17b_owner=arwdDxtm/rr02_1789733917336_f3f17b_owner,rr02_1789733917336_f3f17b_api=arwd/rr02_1789733917336_f3f17b_owner,rr02_1789733917336_f3f17b_worker=arwd/rr02_1789733917336_f3f17b_owner}"
+          },
+          {
+            "nspname": "rr02_proof",
+            "relname": "marker_pkey",
+            "owner": "rr02_1789733917336_f3f17b_owner",
+            "relacl": null
+          }
+        ],
+        "defaults": [
+          {
+            "owner": "rr02_1789733917336_f3f17b_owner",
+            "schema": "-",
+            "defaclobjtype": "f",
+            "defaclacl": "{rr02_1789733917336_f3f17b_owner=X/rr02_1789733917336_f3f17b_owner}"
+          },
+          {
+            "owner": "rr02_1789733917336_f3f17b_owner",
+            "schema": "rr02_proof",
+            "defaclobjtype": "r",
+            "defaclacl": "{rr02_1789733917336_f3f17b_api=arwd/rr02_1789733917336_f3f17b_owner,rr02_1789733917336_f3f17b_worker=arwd/rr02_1789733917336_f3f17b_owner}"
+          },
+          {
+            "owner": "rr02_1789733917336_f3f17b_qowner",
+            "schema": "-",
+            "defaclobjtype": "f",
+            "defaclacl": "{rr02_1789733917336_f3f17b_qowner=X/rr02_1789733917336_f3f17b_qowner}"
+          }
+        ],
+        "publicSchemaGrants": 0,
+        "publicDatabaseGrants": 0,
+        "publicFunctionGrants": 0
+      }
+    },
+    {
+      "name": "worker-cannot-create-queue",
+      "status": "pass"
+    },
+    {
+      "name": "queue-work-complete-retry-duplicates-restart",
+      "status": "pass",
+      "details": {
+        "attempts": 2,
+        "ordinaryDuplicatesAccepted": true,
+        "singletonDuplicate": null,
+        "gracefulStop": true
+      }
+    },
+    {
+      "name": "maintenance-and-crash-expiration-redelivery",
+      "status": "pass",
+      "details": {
+        "redeliveredId": "31a0658b-1ab3-4d67-9c42-fd4bea89a4cd",
+        "reindexes": 11,
+        "profile": "NOLOGIN queue owner via maintenance SET ROLE",
+        "crashModel": "forcibly terminated child process during real work callback",
+        "callbackConnections": [
+          {
+            "state": "idle",
+            "xact_start": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "handler-timeout-retry",
+      "status": "pass",
+      "details": {
+        "attempts": 2,
+        "expirationSeconds": 1,
+        "note": "timeouts do not cancel arbitrary external side effects; synthetic callback only"
+      }
+    },
+    {
+      "name": "fail-closed-bootstrap-and-sanitized-connectivity",
+      "status": "pass"
+    },
+    {
+      "name": "logical-dump-restore-ownership-acl-and-restart",
+      "status": "pass",
+      "details": {
+        "backup": {
+          "code": 0,
+          "outputBytes": 0
+        },
+        "restore": {
+          "code": 0,
+          "outputBytes": 0
+        },
+        "dump": "C:\\Users\\coffe\\OneDrive\\Desktop\\Proyecto Desarrollo\\.local\\rr02\\rr02_1789733917336_f3f17b\\proof.dump",
+        "markerRows": 2,
+        "journalRows": 1,
+        "queueRows": 8,
+        "sameClusterRolesPreserved": true,
+        "scope": "logical restore only; no PITR, provider, RPO or RTO proof"
+      }
+    }
+  ],
+  "status": "pass"
+}

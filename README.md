@@ -70,3 +70,7 @@ La auditoría RR-01 identificó cuatro avisos moderados en la cadena de desarrol
 
 En esta máquina el navegador de Playwright está en el caché del proyecto. Antes de instalarlo o ejecutar E2E en PowerShell: ` $env:PLAYWRIGHT_BROWSERS_PATH = (Join-Path $PWD '.local/playwright') `. En un checkout nuevo puede usar el caché predeterminado con las órdenes de instalación anteriores.
 
+
+## RR-02 operational proof
+
+The isolated PostgreSQL/pg-boss proof is available through `npm run rr02:proof` after starting the existing local PostgreSQL server and selecting the pinned Node runtime. It creates only uniquely named disposable databases/roles; it does not migrate `classroom_dev` or start business jobs. See [run instructions and limits](packages/database/rr02/README.md) and the [RR-02 PASS report](_bmad-output/planning-artifacts/architecture/architecture-Proyecto-Desarrollo-2026-09-11/reviews/RR-02.md). Proof data and failed runs are retained under ignored `.local/rr02`; no automatic destructive cleanup occurs.

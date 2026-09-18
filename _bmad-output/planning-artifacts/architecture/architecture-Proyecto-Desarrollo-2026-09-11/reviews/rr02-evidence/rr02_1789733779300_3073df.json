@@ -1,0 +1,89 @@
+{
+  "run": "rr02_1789733779300_3073df",
+  "names": {
+    "db": "rr02_1789733779300_3073df_db",
+    "restore": "rr02_1789733779300_3073df_restore",
+    "owner": "rr02_1789733779300_3073df_owner",
+    "qowner": "rr02_1789733779300_3073df_qowner",
+    "migration": "rr02_1789733779300_3073df_migration",
+    "maintenance": "rr02_1789733779300_3073df_maintenance",
+    "api": "rr02_1789733779300_3073df_api",
+    "worker": "rr02_1789733779300_3073df_worker"
+  },
+  "checks": [
+    {
+      "name": "fingerprints",
+      "status": "pass",
+      "details": {
+        "node": "v24.21.0",
+        "postgres": {
+          "server_version": "18.6"
+        },
+        "files": {
+          "package-lock.json": "e7f8f02867ad56f38bb4ab20c7443faf0c45c3473cccef4acb267ceaba16c15b",
+          "node_modules/pg-boss/dist/contractor.js": "cbe71733f456f6934b00e8bb99b1a2cde7ab0a2dab8decf53b47725255a55ac6",
+          "node_modules/pg-boss/dist/plans.js": "64ab4b5d77fb8b800b93f17b72b59350b446e45ba0d9b94394c5dc753f06d561",
+          "node_modules/drizzle-orm/pg-core/dialect.js": "a7d7921c939b228a3f1295be5f024a8c264169e368f591c2d29072ffe079b14e",
+          "packages/database/rr02/migrations/0000_slow_leech.sql": "eed69533a2a3a30e32e05b5493a176c41051a3e6063f6ad4a2b4696fb6e9bff3"
+        },
+        "pgBoss": "12.33.1",
+        "schema": 42
+      }
+    },
+    {
+      "name": "provision",
+      "status": "pass"
+    },
+    {
+      "name": "migration-first-replay-rollback",
+      "status": "pass",
+      "details": {
+        "journalRows": 1,
+        "journalHash": "eed69533a2a3a30e32e05b5493a176c41051a3e6063f6ad4a2b4696fb6e9bff3",
+        "releaseGuard": "advisory serialization; immutable reviewed migration hash captured; Drizzle does not validate historical hash drift"
+      }
+    },
+    {
+      "name": "queue-provision",
+      "status": "pass",
+      "details": {
+        "functions": [
+          {
+            "proname": "create_queue",
+            "prosecdef": false
+          },
+          {
+            "proname": "delete_queue",
+            "prosecdef": false
+          },
+          {
+            "proname": "job_now",
+            "prosecdef": false
+          },
+          {
+            "proname": "job_table_format",
+            "prosecdef": false
+          },
+          {
+            "proname": "job_table_run",
+            "prosecdef": false
+          },
+          {
+            "proname": "job_table_run_async",
+            "prosecdef": false
+          }
+        ],
+        "functionSecurity": "all invoker; executing DDL functions still requires owner privileges"
+      }
+    },
+    {
+      "name": "runtime-boundaries",
+      "status": "fail",
+      "code": "ERR_ASSERTION"
+    }
+  ],
+  "status": "fail",
+  "error": {
+    "code": "ERR_ASSERTION"
+  }
+}

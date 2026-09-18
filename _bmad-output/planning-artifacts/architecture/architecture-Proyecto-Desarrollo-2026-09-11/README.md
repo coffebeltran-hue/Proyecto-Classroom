@@ -49,8 +49,12 @@ Vision: teachers operate a programming course from verified roster to published 
 
 The full-product group E2E requirement applies at V1, not as a claim that the MVP supports groups. Public/internal student repositories, Git hard cutoff, automatic official scoring, Redis and microservices are outside this proposed MVP.
 
-## Current repair status — 2026-09-17
+## Historical repair status — 2026-09-17
 
 The [original Anti-Consensus review](reviews/anti-consensus/ANTI-CONSENSUS-REPORT.md) is complete and unchanged: PASS WITH REQUIRED FIXES, 6 HIGH/5 MEDIUM. Juan approved the [bounded repair proposal](reviews/repair/REPAIR-PROPOSAL.md) and explicitly selected AD-5 ingress timing and AD-7 scoped institutional exception; the proposal's pending-approval language is historical. [Repair changelog](reviews/repair/REPAIR-CHANGELOG.md) maps all 11 ACRs to corrected contracts and pending proofs. [Repair checks](reviews/repair/REPAIR-CHECKS.json) distinguish structural validation from runtime proof.
 
 Current OpenAPI: 85 paths, 97 operations, 112 schemas. AD-1–11 remain adopted with explicit AD-5/7 clarifications; AD-12–18 remain PROPOSED. R-01 remains unadopted; OQ-10–13/RR-01–08 remain open. Post-deletion recapture is OUT OF MVP. No ACR is operationally closed. Corrected package is prepared for targeted independent Anti-Consensus re-review; implementation and provider/runtime experiments remain unauthorized.
+
+## Current status — 2026-09-18
+
+The paragraph above records the earlier gate, superseded by the [targeted re-review PASS](reviews/repair/TARGETED-REVIEW.md), Juan's bounded RR-01/bootstrap authorization, and his subsequent RR-02 authorization. [RR-01](reviews/RR-01.md) and [executable bootstrap](reviews/IMPLEMENTATION-PREPARATION.md) passed. [RR-02 PASS](reviews/RR-02.md) now records restricted roles, infrastructure migrations, pg-boss lifecycle/maintenance/failure and local logical restore. Business features, GitHub resources and production deployment were not implemented. AD-12–18 remain proposed, R-01 unadopted, RR-03–07/OQ-10–13 open and RR-08 Future. No ACR is operationally closed; stop before separately authorized RR-03.
