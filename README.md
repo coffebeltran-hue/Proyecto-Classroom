@@ -74,3 +74,7 @@ En esta máquina el navegador de Playwright está en el caché del proyecto. Ant
 ## RR-02 operational proof
 
 The isolated PostgreSQL/pg-boss proof is available through `npm run rr02:proof` after starting the existing local PostgreSQL server and selecting the pinned Node runtime. It creates only uniquely named disposable databases/roles; it does not migrate `classroom_dev` or start business jobs. See [run instructions and limits](packages/database/rr02/README.md) and the [RR-02 PASS report](_bmad-output/planning-artifacts/architecture/architecture-Proyecto-Desarrollo-2026-09-11/reviews/RR-02.md). Proof data and failed runs are retained under ignored `.local/rr02`; no automatic destructive cleanup occurs.
+
+## RR-03 sandbox proof
+
+Separate experimental scripts verify the sandbox GitHub App and persist authenticated webhook receipts. Product API/startup remains unchanged. These proofs do not create academic identities, grant organization-admin authority, provision repositories, or execute business jobs. See [local commands and manual handoff](packages/database/rr03/README.md).

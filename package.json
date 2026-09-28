@@ -22,6 +22,10 @@
     "db:check": "node --env-file-if-exists=.env --conditions=development --import tsx packages/database/src/check.ts",
     "rr02:generate": "drizzle-kit generate --config packages/database/rr02/drizzle.config.ts",
     "rr02:proof": "node --import tsx scripts/rr02-proof.mjs",
+    "rr03:provider": "node --use-env-proxy --env-file=.env --import tsx scripts/rr03-provider-proof.mjs",
+    "rr03:generate": "drizzle-kit generate --config packages/database/rr03/drizzle.config.ts",
+    "rr03:proof": "node --import tsx scripts/rr03-local-proof.mjs",
+    "rr03:serve": "node --use-env-proxy --env-file=.env --import tsx scripts/rr03-serve.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test"
   },
