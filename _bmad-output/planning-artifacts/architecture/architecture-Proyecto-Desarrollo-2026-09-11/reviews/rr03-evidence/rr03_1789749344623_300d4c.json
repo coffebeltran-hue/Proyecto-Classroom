@@ -1,0 +1,45 @@
+{
+  "source": "real isolated PostgreSQL; synthetic signed webhook HTTP injection; simulated OAuth",
+  "run": "rr03_1789749344623_300d4c",
+  "names": {
+    "db": "rr03_1789749344623_300d4c_db",
+    "owner": "rr03_1789749344623_300d4c_owner",
+    "migration": "rr03_1789749344623_300d4c_migration",
+    "api": "rr03_1789749344623_300d4c_api"
+  },
+  "status": "pass",
+  "checks": [
+    {
+      "name": "isolated-restricted-provision",
+      "status": "pass"
+    },
+    {
+      "name": "concurrent-durable-dedup-and-conflict",
+      "status": "pass"
+    },
+    {
+      "name": "auth-before-parse-and-no-invalid-receipts",
+      "status": "pass"
+    },
+    {
+      "name": "db-down-nonack",
+      "status": "pass"
+    }
+  ],
+  "fingerprints": {
+    "scripts/rr03-local-proof.mjs": "be261047fa22e893c2fc5878a0768a99f6815ccbebd77662ba9f32179830a408",
+    "scripts/rr03-server.ts": "eb8d9419899fde8df173f7410e622dfa66db6b87d1c32766d6e158eb79129b7f",
+    "packages/database/src/rr03-intake.ts": "9ca7661f406cd352ee4e924e606c8694db77f293b387dcc58a27db82c006ea41",
+    "packages/database/rr03/schema.ts": "3f608e72c0efc7cc8e65e084d2e7ec5dcb36800f4847007faeb7137f03182c63",
+    "packages/database/rr03/migrations/0000_real_miek.sql": "4cc9cdbd9223b3abb1d1a5bd2ae58ec356712ec50b6b0902439e31ae027a36af",
+    "packages/github/src/security.ts": "ea36ef5c412f65da8719b5f7654e8f853729ddb05ca4b3c09a25d7cb7bd6b8e2",
+    "packages/github/src/index.ts": "c51b598f8de59dae44644574c2d9b4ce5b2e76690dd3b0b22b37b5530e63d3be",
+    "node_modules/@octokit/oauth-methods/dist-src/exchange-web-flow-code.js": "dd8837e0c2c66541ba85d431a00c75eaf8bfaa548997397649867b0f16d72b04",
+    "node_modules/drizzle-orm/pg-core/dialect.js": "a7d7921c939b228a3f1295be5f024a8c264169e368f591c2d29072ffe079b14e",
+    "package-lock.json": "e7f8f02867ad56f38bb4ab20c7443faf0c45c3473cccef4acb267ceaba16c15b"
+  },
+  "versions": {
+    "node": "v24.21.0",
+    "postgres": "18.6"
+  }
+}

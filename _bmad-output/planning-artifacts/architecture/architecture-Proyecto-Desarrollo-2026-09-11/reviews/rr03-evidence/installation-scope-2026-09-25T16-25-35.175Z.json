@@ -1,0 +1,153 @@
+{
+  "startedAt": "2026-09-25T16:25:35.180Z",
+  "target": "rr03-installation-scope-20260925-01",
+  "apiVersion": "2026-03-10",
+  "generationPostCount": 0,
+  "status": "STOP",
+  "observations": [
+    {
+      "method": "GET",
+      "path": "/app",
+      "status": 200,
+      "at": "2026-09-25T16:25:35.657Z",
+      "requestId": "B632:3AEF30:9E11C1:2101D7D:6AB6A0B6",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/app/installations/162753561",
+      "status": 200,
+      "at": "2026-09-25T16:25:35.882Z",
+      "requestId": "B632:3AEF30:9E12CF:21020F9:6AB6A0B6",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "POST",
+      "path": "/app/installations/162753561/access_tokens",
+      "status": 201,
+      "at": "2026-09-25T16:25:36.059Z",
+      "requestId": "B632:3AEF30:9E1418:2102501:6AB6A0B6",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/installation/repositories?per_page=100",
+      "status": 200,
+      "at": "2026-09-25T16:25:36.308Z",
+      "requestId": "B632:3AEF30:9E14EA:210281B:6AB6A0B6",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-allowed",
+      "status": 200,
+      "at": "2026-09-25T16:25:36.575Z",
+      "requestId": "B632:3AEF30:9E1637:2102C8C:6AB6A0B7",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-allowed/commits/main",
+      "status": 200,
+      "at": "2026-09-25T16:25:36.947Z",
+      "requestId": "B632:3AEF30:9E17C0:2103181:6AB6A0B7",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-allowed/git/trees/878838669a9ee38918902c9165418e6897871419?recursive=1",
+      "status": 200,
+      "at": "2026-09-25T16:25:37.170Z",
+      "requestId": "B632:3AEF30:9E19E1:210382E:6AB6A0B7",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-allowed/git/blobs/b4b34cc077b63263aa34cb46a6cacc3039200320",
+      "status": 200,
+      "at": "2026-09-25T16:25:37.383Z",
+      "requestId": "B632:3AEF30:9E1B18:2103C28:6AB6A0B7",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-installation-scope-20260925-01",
+      "status": 404,
+      "at": "2026-09-25T16:25:37.554Z",
+      "requestId": "B632:3AEF30:9E1C28:2103F94:6AB6A0B8",
+      "selectedApiVersion": "2026-03-10",
+      "message": "Not Found",
+      "errors": []
+    },
+    {
+      "method": "DELETE",
+      "path": "/installation/token",
+      "status": 204,
+      "at": "2026-09-25T16:25:37.751Z",
+      "requestId": "B632:3AEF30:9E1CFF:210422C:6AB6A0B8",
+      "selectedApiVersion": "2026-03-10"
+    }
+  ],
+  "tokenMintBody": {
+    "permissions": {
+      "administration": "write",
+      "contents": "read",
+      "metadata": "read"
+    }
+  },
+  "repositoryIdsParameterPresent": false,
+  "repositoriesParameterPresent": false,
+  "app": {
+    "id": 4990040,
+    "slug": "classroom-rr03-juan"
+  },
+  "installation": {
+    "id": 162753561,
+    "appId": 4990040,
+    "accountId": 330894124,
+    "selection": "selected",
+    "suspendedAt": null,
+    "permissions": {
+      "contents": "read",
+      "metadata": "read",
+      "administration": "write"
+    }
+  },
+  "tokenIssued": true,
+  "tokenPermissions": {
+    "administration": "write",
+    "contents": "read",
+    "metadata": "read"
+  },
+  "tokenExpiresAt": "2026-09-25T17:26:30Z",
+  "repositoryIds": [
+    1375855376
+  ],
+  "repositories": [
+    {
+      "id": 1375855376,
+      "name": "rr03-allowed",
+      "private": true,
+      "ownerId": 330894124
+    }
+  ],
+  "deniedExcluded": true,
+  "source": {
+    "id": 1375855376,
+    "private": true,
+    "isTemplate": true,
+    "branch": "main",
+    "commit": "0ca44601747fe3173fcf8053bb75e90607d3aa5c",
+    "tree": "878838669a9ee38918902c9165418e6897871419",
+    "manifestEqual": true,
+    "markerSha256": "b0d4300331fa26d3f1dba063d593a8c227f843e7cb6786afe71d149312dc5072"
+  },
+  "authorityAndSourcePreflight": "PASS",
+  "targetObservation": {
+    "status": 404,
+    "existence": "UNKNOWN"
+  },
+  "stopReason": "TARGET_ABSENCE_NOT_ESTABLISHED_WITH_SELECTED_CREDENTIAL_OWNER_CONFIRMATION_REQUIRED",
+  "tokenRevocationStatus": 204,
+  "finishedAt": "2026-09-25T16:25:37.753Z"
+}

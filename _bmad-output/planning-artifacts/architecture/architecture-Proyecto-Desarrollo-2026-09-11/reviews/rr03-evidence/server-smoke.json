@@ -1,0 +1,5 @@
+{
+  "source": "real local Windows listeners",
+  "oauthMissingStateStatus": 400,
+  "webhookListenerOAuthAbsentStatus": 404
+}

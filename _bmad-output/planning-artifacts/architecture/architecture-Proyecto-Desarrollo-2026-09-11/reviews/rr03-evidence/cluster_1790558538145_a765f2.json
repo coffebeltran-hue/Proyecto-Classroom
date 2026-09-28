@@ -1,0 +1,82 @@
+{
+  "run": "cluster_1790558538145_a765f2",
+  "logicalDirectory": ".local/rr03-b-clusters/cluster_1790558538145_a765f2",
+  "oldClusterPort": 54329,
+  "oldClusterUsed": false,
+  "checks": [
+    {
+      "name": "connect-create-read-update-delete",
+      "status": "PASS"
+    },
+    {
+      "name": "cluster-restart-durable-data",
+      "status": "PASS"
+    }
+  ],
+  "lifecycle": [
+    {
+      "action": "initdb",
+      "code": 0,
+      "stdout": "Los archivos de este cluster ser�n de propiedad del usuario �coffe�.\r\nEste usuario tambi�n debe ser quien ejecute el proceso servidor.\r\n\r\nEl cluster ser� inicializado con configuraci�n regional �C�.\r\nLa configuraci�n de b�squeda en texto ha sido definida a �english�.\r\n\r\nLas sumas de verificaci�n en p�ginas de datos han sido activadas.\r\n\r\ncreando el directorio C:/Users/coffe/OneDrive/Desktop/Proyecto Desarrollo/.local/rr03-b-clusters/cluster_1790558538145_a765f2/data ... hecho\r\ncreando subdirectorios ... hecho\r\nseleccionando implementaci�n de memoria compartida din�mica ... windows\r\nseleccionando el valor para �max_connections� ... 100\r\nseleccionando el valor para �shared_buffers� ... 128MB\r\nseleccionando el huso horario por omisi�n ... America/Bogota\r\ncreando archivos de configuraci�n ... hecho\r\nejecutando script de inicio (bootstrap) ... hecho\r\nrealizando inicializaci�n post-bootstrap ... hecho\r\nsincronizando los datos a disco ... hecho\r\n\r\nCompletado. Ahora puede iniciar el servidor de bases de datos usando:\r\n\r\n    ^\"C^:^\\Users^\\coffe^\\OneDrive^\\Desktop^\\Proyecto^ Desarrollo^\\^.local^\\runtimes^\\postgresql^-18^.6^\\pgsql^\\bin^\\pg^_ctl^\" -D ^\"C^:^\\Users^\\coffe^\\OneDrive^\\Desktop^\\Proyecto^ Desarrollo^\\^.local^\\rr03^-b^-clusters^\\cluster^_1790558538145^_a765f2^\\data^\" -l archivo_de_registro start\r\n\r\n",
+      "stderr": ""
+    },
+    {
+      "action": "start",
+      "at": "2026-09-28T01:22:24.931Z",
+      "code": 0,
+      "stdout": "esperando que el servidor se inicie.... listo\r\nservidor iniciado\r\n",
+      "stderr": ""
+    },
+    {
+      "action": "stop",
+      "at": "2026-09-28T01:22:26.281Z",
+      "code": 0,
+      "stdout": "esperando que el servidor se detenga.... listo\r\nservidor detenido\r\n",
+      "stderr": ""
+    },
+    {
+      "action": "start",
+      "at": "2026-09-28T01:22:26.672Z",
+      "code": 0,
+      "stdout": "esperando que el servidor se inicie.... listo\r\nservidor iniciado\r\n",
+      "stderr": ""
+    },
+    {
+      "action": "stop",
+      "at": "2026-09-28T01:22:52.502Z",
+      "code": 0,
+      "stdout": "esperando que el servidor se detenga..... listo\r\nservidor detenido\r\n",
+      "stderr": ""
+    }
+  ],
+  "status": "PASS",
+  "binaryVersion": "postgres (PostgreSQL) 18.6",
+  "port": 54831,
+  "privateCredentialFile": ".local/rr03-b-clusters/cluster_1790558538145_a765f2/connection.json",
+  "serverVersion": "18.6",
+  "harnessOutput": [
+    "PASS B01",
+    "PASS B02",
+    "PASS B03",
+    "PASS B04",
+    "PASS B05",
+    "PASS B06",
+    "PASS B07",
+    "PASS B08",
+    "PASS B09",
+    "PASS B10",
+    "PASS B11",
+    "PASS B12",
+    "PASS B13",
+    "PASS B14",
+    "PASS B15",
+    "PASS: _bmad-output/planning-artifacts/architecture/architecture-Proyecto-Desarrollo-2026-09-11/reviews/rr03-evidence/rr03b_1790558546935_050c61.json"
+  ],
+  "harnessErrors": [
+    "(node:23288) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.\n(Use `node --trace-deprecation ...` to show where the warning was created)\n"
+  ],
+  "harnessExitCode": 0,
+  "finalState": "STOPPED_PRESERVED",
+  "credentialsInEvidence": false,
+  "finishedAt": "2026-09-28T01:22:52.504Z"
+}

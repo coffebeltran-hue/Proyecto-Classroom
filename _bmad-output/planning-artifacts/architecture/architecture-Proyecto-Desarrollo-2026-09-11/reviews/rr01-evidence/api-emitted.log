@@ -1,0 +1,2 @@
+PASS: emitted Node ESM API starts and HTTP liveness returns expected process-only response. Test process terminated.
+API listening on http://127.0.0.1:54368 (process liveness only)

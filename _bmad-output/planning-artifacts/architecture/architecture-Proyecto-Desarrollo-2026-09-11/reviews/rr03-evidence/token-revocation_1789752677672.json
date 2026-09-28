@@ -1,0 +1,34 @@
+{
+  "source": "real GitHub API",
+  "status": "pass",
+  "checks": [
+    {
+      "step": "same-token-before-revocation",
+      "status": 200,
+      "observedAt": "2026-09-18T17:31:18.760Z"
+    },
+    {
+      "step": "revoke-own-token",
+      "status": 204,
+      "observedAt": "2026-09-18T17:31:18.952Z"
+    },
+    {
+      "step": "same-token-after-revocation",
+      "status": 200,
+      "observedAt": "2026-09-18T17:31:19.152Z"
+    },
+    {
+      "step": "same-token-after-revocation",
+      "status": 200,
+      "observedAt": "2026-09-18T17:31:20.356Z"
+    },
+    {
+      "step": "same-token-after-revocation",
+      "status": 401,
+      "observedAt": "2026-09-18T17:31:23.502Z"
+    }
+  ],
+  "scriptSha256": "419f8d5cc2b21301d70fd38dd874b23e83cb76814e344a0138c9804a12444f8a",
+  "octokitVersion": "5.0.5",
+  "expiresAt": "2026-09-18T18:31:59Z"
+}

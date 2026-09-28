@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "markdown_files_checked": 15,
+  "local_file_links_checked": 33,
+  "paths": 82,
+  "operations": 94,
+  "schemas": 101,
+  "issues": [],
+  "limits": "Checks file targets, not Markdown anchors or rendered Mermaid; no runtime/integration/adversarial validation."
+}

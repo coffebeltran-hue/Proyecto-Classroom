@@ -1,0 +1,16 @@
+{
+  "run": "rr03b_1790556551601_c4cbc6",
+  "status": "FAIL",
+  "source": "isolated local PostgreSQL + loopback provider + real child process crashes",
+  "checks": [],
+  "processEvents": [],
+  "negativeControls": [],
+  "transactionObservations": [],
+  "sourceHashes": {},
+  "githubCalls": 0,
+  "failure": {
+    "name": "error",
+    "message": "could not open file \"base/5/1249\": No such file or directory"
+  },
+  "finishedAt": "2026-09-28T00:49:11.762Z"
+}

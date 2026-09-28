@@ -1,0 +1,13 @@
+
+> test
+> vitest run
+
+
+ RUN  v5.0.1 C:/Users/coffe/OneDrive/Desktop/Proyecto Desarrollo
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  22:00:05
+   Duration  2.71s (tests 80%, import 10%, transform 8%, worker 2%)
+

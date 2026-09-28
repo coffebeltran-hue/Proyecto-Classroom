@@ -1,0 +1,229 @@
+{
+  "startedAt": "2026-09-28T00:27:40.028Z",
+  "target": "rr03-installation-scope-20260925-01",
+  "apiVersion": "2026-03-10",
+  "generationPostCount": 1,
+  "status": "INSTALLATION_TEMPLATE_REPRODUCTION_PASS",
+  "observations": [
+    {
+      "method": "GET",
+      "path": "/app/installations/162753561",
+      "status": 200,
+      "at": "2026-09-28T00:27:40.531Z",
+      "requestId": "F6F3:143584:7BAEE27:194D7970:6AB9B4B7",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "POST",
+      "path": "/app/installations/162753561/access_tokens",
+      "status": 201,
+      "at": "2026-09-28T00:27:40.780Z",
+      "requestId": "F6F3:143584:7BAEF24:194D7C6C:6AB9B4B7",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/installation/repositories?per_page=100",
+      "status": 200,
+      "at": "2026-09-28T00:27:41.048Z",
+      "requestId": "F6F3:143584:7BAF060:194D7FF5:6AB9B4B7",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-allowed",
+      "status": 200,
+      "at": "2026-09-28T00:27:41.355Z",
+      "requestId": "F6F3:143584:7BAF175:194D839B:6AB9B4B8",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-allowed/commits/main",
+      "status": 200,
+      "at": "2026-09-28T00:27:41.899Z",
+      "requestId": "F6F3:143584:7BAF2BD:194D8820:6AB9B4B8",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "POST",
+      "path": "/repos/classroom-rr03-juan/rr03-allowed/generate",
+      "status": 201,
+      "at": "2026-09-28T00:27:44.527Z",
+      "requestId": "F6F3:143584:7BAF552:194D9035:6AB9B4B9",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-installation-scope-20260925-01/commits/main",
+      "status": 409,
+      "at": "2026-09-28T00:27:44.746Z",
+      "requestId": "F6F3:143584:7BB0100:194DB5FB:6AB9B4BB",
+      "selectedApiVersion": "2026-03-10",
+      "message": "Git Repository is empty.",
+      "errors": []
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-installation-scope-20260925-01/commits/main",
+      "status": 200,
+      "at": "2026-09-28T00:27:50.140Z",
+      "requestId": "E812:132725:366E871:B2B4FA5:6AB9B4C0",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-installation-scope-20260925-01/git/trees/878838669a9ee38918902c9165418e6897871419?recursive=1",
+      "status": 200,
+      "at": "2026-09-28T00:27:50.431Z",
+      "requestId": "E812:132725:366EA21:B2B550A:6AB9B4C1",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-installation-scope-20260925-01/git/blobs/b4b34cc077b63263aa34cb46a6cacc3039200320",
+      "status": 200,
+      "at": "2026-09-28T00:27:50.650Z",
+      "requestId": "E812:132725:366EB3C:B2B5874:6AB9B4C1",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "GET",
+      "path": "/repos/classroom-rr03-juan/rr03-allowed/commits/main",
+      "status": 200,
+      "at": "2026-09-28T00:27:51.057Z",
+      "requestId": "E812:132725:366EC01:B2B5B19:6AB9B4C1",
+      "selectedApiVersion": "2026-03-10"
+    },
+    {
+      "method": "DELETE",
+      "path": "/installation/token",
+      "status": 204,
+      "at": "2026-09-28T00:27:51.258Z",
+      "requestId": "E812:132725:366ED88:B2B5FFD:6AB9B4C2",
+      "selectedApiVersion": "2026-03-10"
+    }
+  ],
+  "tokenMintBody": {
+    "permissions": {
+      "administration": "write",
+      "contents": "read",
+      "metadata": "read"
+    }
+  },
+  "repositoryIdsParameterPresent": false,
+  "repositoriesParameterPresent": false,
+  "ownerConfirmation": {
+    "source": "Juan, current user instruction",
+    "targetAbsent": true,
+    "visibleRepositories": [
+      "rr03-allowed",
+      "rr03-denied"
+    ],
+    "noManualMutation": true
+  },
+  "installation": {
+    "id": 162753561,
+    "appId": 4990040,
+    "accountId": 330894124,
+    "selection": "selected",
+    "suspendedAt": null,
+    "permissions": {
+      "contents": "read",
+      "metadata": "read",
+      "administration": "write"
+    }
+  },
+  "tokenIssued": true,
+  "tokenPermissions": {
+    "administration": "write",
+    "contents": "read",
+    "metadata": "read"
+  },
+  "tokenExpiresAt": "2026-09-28T01:28:39Z",
+  "repositoryIds": [
+    1375855376
+  ],
+  "repositories": [
+    {
+      "id": 1375855376,
+      "name": "rr03-allowed",
+      "private": true,
+      "ownerId": 330894124
+    }
+  ],
+  "deniedExcluded": true,
+  "source": {
+    "id": 1375855376,
+    "private": true,
+    "isTemplate": true,
+    "branch": "main",
+    "commit": "0ca44601747fe3173fcf8053bb75e90607d3aa5c",
+    "tree": "878838669a9ee38918902c9165418e6897871419",
+    "guard": "Same frozen commit/tree; prior full source readback reused"
+  },
+  "authorityAndSourcePreflight": "PASS",
+  "durableIntent": {
+    "method": "POST",
+    "path": "/repos/classroom-rr03-juan/rr03-allowed/generate",
+    "body": {
+      "owner": "classroom-rr03-juan",
+      "name": "rr03-installation-scope-20260925-01",
+      "private": true,
+      "include_all_branches": false
+    },
+    "at": "2026-09-28T00:27:41.906Z",
+    "ownerConfirmedAbsent": true
+  },
+  "sentinelCreated": true,
+  "dispatchStartedAt": "2026-09-28T00:27:41.921Z",
+  "generationHttpStatus": 201,
+  "generationResponse": {
+    "id": 1391530963,
+    "name": "rr03-installation-scope-20260925-01",
+    "private": true,
+    "ownerId": 330894124
+  },
+  "targetObservation": {
+    "existence": "EXISTS",
+    "id": 1391530963,
+    "private": true
+  },
+  "comparison": {
+    "targetCommit": "ee109ff65c90f52a845bc378e497a31f7aab7ae8",
+    "targetTree": "878838669a9ee38918902c9165418e6897871419",
+    "manifest": [
+      {
+        "path": ".github",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "620ade635d78e371fbe82d2fa0301ef7064cb652"
+      },
+      {
+        "path": ".github/workflows",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "9da6c0aa2e18a5ec15af58d3402986ff7d549bda"
+      },
+      {
+        "path": ".github/workflows/rr03-marker.yml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b4b34cc077b63263aa34cb46a6cacc3039200320"
+      },
+      {
+        "path": "README.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ed57c4d7cd910b1027272d5f6afd0b8c5a52ef02"
+      }
+    ],
+    "markerSha256": "b0d4300331fa26d3f1dba063d593a8c227f843e7cb6786afe71d149312dc5072",
+    "treeEqual": true,
+    "manifestEqual": true,
+    "markerEqual": true
+  },
+  "sourceUnchangedAfter": true,
+  "tokenRevocationStatus": 204,
+  "finishedAt": "2026-09-28T00:27:51.260Z"
+}

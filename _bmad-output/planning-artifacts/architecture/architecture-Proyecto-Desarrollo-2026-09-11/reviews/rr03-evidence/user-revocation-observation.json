@@ -1,0 +1,24 @@
+{
+  "source": "restricted PostgreSQL query after Juan-reported personal authorization revocation",
+  "observedAt": "2026-09-18T17:27:27.483Z",
+  "receipts": [
+    {
+      "app_id": "4990040",
+      "delivery_id": "354a1cd2-b386-11f1-997a-d668c787ba9b",
+      "installation_id": null,
+      "event": "github_app_authorization",
+      "digest": "26684e36bf37e14b56c7ec37837d250b44c71b1937a4feb05877941273f72d0e",
+      "status": "received",
+      "received_at": "2026-09-18T17:26:41.890Z"
+    }
+  ],
+  "installation": [
+    {
+      "app_id": "4990040",
+      "installation_id": "162753561",
+      "account_id": "330894124",
+      "capability": "verification-required"
+    }
+  ],
+  "oldUserTokenRejectionTested": false
+}

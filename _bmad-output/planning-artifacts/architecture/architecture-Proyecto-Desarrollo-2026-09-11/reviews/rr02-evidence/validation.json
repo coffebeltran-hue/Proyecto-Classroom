@@ -1,0 +1,19 @@
+{
+  "recordType": "transcription of successful exec tool outputs; commands were not repeated for logging",
+  "node": "24.21.0",
+  "checks": [
+    {"command":"npm run typecheck","exitCode":0,"result":"tsc --noEmit && tsc -p apps/web/tsconfig.json --noEmit passed"},
+    {"command":"npm test","exitCode":0,"result":"Vitest 5.0.1: 2 test files passed; 6 tests passed"},
+    {"command":"npm run build","exitCode":0,"result":"API and worker compilation plus Vite 8.3.0 production build passed; 15 modules transformed"},
+    {"command":"git diff -- package-lock.json","exitCode":0,"result":"empty; dependency graph unchanged"},
+    {"command":"Playwright","status":"skipped","reason":"No frontend/API behavior changes"}
+  ],
+  "finalProof": ".local/rr02/rr02_1789733917336_f3f17b/evidence.json",
+  "preservedRuns": [
+    {"run":"rr02_1789733606644_e1dbaa","status":"pass-exploratory","note":"Broader queue grants; simulated connection-loss crash"},
+    {"run":"rr02_1789733670702_b4c1e6","status":"pass-exploratory","note":"Broader queue grants; real killed process and handler timeout"},
+    {"run":"rr02_1789733779300_3073df","status":"fail","note":"Incorrect hard-coded expected default-ACL row count (expected 5; actual 4). Retained; no database runtime failure concealed."},
+    {"run":"rr02_1789733826104_6251f6","status":"pass","note":"Narrow runtime grants and negatives; owner maintenance; forced crash, timeout, graceful stop; restore"},
+    {"run":"rr02_1789733917336_f3f17b","status":"pass-final","note":"Final source fingerprints; removed unnecessary queue owner CREATE grant in restore database; otherwise same proof"}
+  ]
+}

@@ -1,0 +1,548 @@
+{
+  "node": {
+    "version": "24.21.0",
+    "engines": {
+      "npm": ">=5.0.0"
+    },
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-10T00:48:28.813Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/node/24.21.0",
+    "integrity": "sha512-GquwdXTr1CyRzrHsP+GVYnKj/yxIX7kUpyGMKu30fKJa9Hqtp9GP/Zu4BXY3gLIQVc/H5eWdMQmBgMBx5veCbw=="
+  },
+  "npm": {
+    "version": "11.19.0",
+    "engines": {
+      "node": "^20.17.0 || >=22.9.0"
+    },
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "Artistic-2.0",
+    "deprecated": null,
+    "published": null,
+    "type": null,
+    "source": "https://registry.npmjs.org/npm/11.19.0",
+    "integrity": null
+  },
+  "typescript": {
+    "version": "6.0.3",
+    "engines": {
+      "node": ">=14.17"
+    },
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "Apache-2.0",
+    "deprecated": null,
+    "published": "2026-04-16T23:38:27.905Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/typescript/6.0.3",
+    "integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw=="
+  },
+  "react": {
+    "version": "19.3.0",
+    "engines": {
+      "node": ">=0.10.0"
+    },
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-09T17:21:30.071Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/react/19.3.0",
+    "integrity": "sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog=="
+  },
+  "react-dom": {
+    "version": "19.3.0",
+    "engines": null,
+    "peers": {
+      "react": "^19.3.0"
+    },
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-09T17:17:39.744Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/react-dom/19.3.0",
+    "integrity": "sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q=="
+  },
+  "vite": {
+    "version": "8.3.0",
+    "engines": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "peers": {
+      "tsx": "^4.8.1",
+      "jiti": ">=1.21.0",
+      "less": "^4.0.0",
+      "sass": "^1.70.0",
+      "yaml": "^2.4.2",
+      "stylus": ">=0.54.8",
+      "terser": "^5.16.0",
+      "esbuild": "^0.27.0 || ^0.28.0",
+      "sugarss": "^5.0.0",
+      "@types/node": "^20.19.0 || >=22.12.0",
+      "sass-embedded": "^1.70.0",
+      "@vitejs/devtools": "^0.7.1"
+    },
+    "peerDependencies": null,
+    "peerMeta": {
+      "tsx": {
+        "optional": true
+      },
+      "jiti": {
+        "optional": true
+      },
+      "less": {
+        "optional": true
+      },
+      "sass": {
+        "optional": true
+      },
+      "yaml": {
+        "optional": true
+      },
+      "stylus": {
+        "optional": true
+      },
+      "terser": {
+        "optional": true
+      },
+      "esbuild": {
+        "optional": true
+      },
+      "sugarss": {
+        "optional": true
+      },
+      "@types/node": {
+        "optional": true
+      },
+      "sass-embedded": {
+        "optional": true
+      },
+      "@vitejs/devtools": {
+        "optional": true
+      }
+    },
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-10T11:30:26.283Z",
+    "type": "module",
+    "source": "https://registry.npmjs.org/vite/8.3.0",
+    "integrity": "sha512-lhZBVvEHefgE+HQZC9O7EBJgCU/nVzFNl7vkS4RE0APtWLP02/8QVIkQtzBxPquh7lq5/78NHipTj7ODQ6XuyQ=="
+  },
+  "@vitejs/plugin-react": {
+    "version": "6.1.1",
+    "engines": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "peers": {
+      "vite": "^8.0.0",
+      "oxc-transform-react": "^0.145.0",
+      "@rolldown/plugin-babel": "^0.1.7 || ^0.2.0",
+      "babel-plugin-react-compiler": "^1.0.0"
+    },
+    "peerDependencies": null,
+    "peerMeta": {
+      "oxc-transform-react": {
+        "optional": true
+      },
+      "@rolldown/plugin-babel": {
+        "optional": true
+      },
+      "babel-plugin-react-compiler": {
+        "optional": true
+      }
+    },
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-08-28T03:30:56.619Z",
+    "type": "module",
+    "source": "https://registry.npmjs.org/@vitejs/plugin-react/6.1.1",
+    "integrity": "sha512-yxLaQV9gkhS8ezJqCM6+ndU7mDY6gqAg75NQ+0IjwEI8IYOmQCgkRwHKVSfWXW076DsqMo0Dk+0FK1U+M5RgFw=="
+  },
+  "fastify": {
+    "version": "5.12.5",
+    "engines": null,
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-16T07:37:06.302Z",
+    "type": "commonjs",
+    "source": "https://registry.npmjs.org/fastify/5.12.5",
+    "integrity": "sha512-OB2k1dlxs5/NAABqeKV2FUHkSD2BbENsCak8yULVcymn3fHIPDVa9TI3SDnJSWYSllZmSYuZXy2gTnsT+Sut1A=="
+  },
+  "drizzle-orm": {
+    "version": "0.45.2",
+    "engines": null,
+    "peers": {
+      "pg": ">=8",
+      "gel": ">=2",
+      "knex": "*",
+      "kysely": "*",
+      "mysql2": ">=2",
+      "sql.js": ">=1",
+      "sqlite3": ">=5",
+      "postgres": ">=3",
+      "@types/pg": "*",
+      "bun-types": "*",
+      "expo-sqlite": ">=14.0.0",
+      "@types/sql.js": "*",
+      "@libsql/client": ">=0.10.0",
+      "@prisma/client": "*",
+      "@upstash/redis": ">=1.34.7",
+      "better-sqlite3": ">=7",
+      "@xata.io/client": "*",
+      "@vercel/postgres": ">=0.8.0",
+      "@opentelemetry/api": "^1.4.1",
+      "@libsql/client-wasm": ">=0.10.0",
+      "@electric-sql/pglite": ">=0.2.0",
+      "@planetscale/database": ">=1.13",
+      "@tidbcloud/serverless": "*",
+      "@types/better-sqlite3": "*",
+      "@aws-sdk/client-rds-data": ">=3",
+      "@neondatabase/serverless": ">=0.10.0",
+      "@cloudflare/workers-types": ">=4",
+      "@op-engineering/op-sqlite": ">=2"
+    },
+    "peerDependencies": null,
+    "peerMeta": {
+      "pg": {
+        "optional": true
+      },
+      "gel": {
+        "optional": true
+      },
+      "knex": {
+        "optional": true
+      },
+      "kysely": {
+        "optional": true
+      },
+      "mysql2": {
+        "optional": true
+      },
+      "prisma": {
+        "optional": true
+      },
+      "sql.js": {
+        "optional": true
+      },
+      "sqlite3": {
+        "optional": true
+      },
+      "postgres": {
+        "optional": true
+      },
+      "@types/pg": {
+        "optional": true
+      },
+      "bun-types": {
+        "optional": true
+      },
+      "expo-sqlite": {
+        "optional": true
+      },
+      "@types/sql.js": {
+        "optional": true
+      },
+      "@libsql/client": {
+        "optional": true
+      },
+      "@prisma/client": {
+        "optional": true
+      },
+      "@upstash/redis": {
+        "optional": true
+      },
+      "better-sqlite3": {
+        "optional": true
+      },
+      "@xata.io/client": {
+        "optional": true
+      },
+      "@vercel/postgres": {
+        "optional": true
+      },
+      "@opentelemetry/api": {
+        "optional": true
+      },
+      "@libsql/client-wasm": {
+        "optional": true
+      },
+      "@electric-sql/pglite": {
+        "optional": true
+      },
+      "@planetscale/database": {
+        "optional": true
+      },
+      "@tidbcloud/serverless": {
+        "optional": true
+      },
+      "@types/better-sqlite3": {
+        "optional": true
+      },
+      "@aws-sdk/client-rds-data": {
+        "optional": true
+      },
+      "@neondatabase/serverless": {
+        "optional": true
+      },
+      "@cloudflare/workers-types": {
+        "optional": true
+      },
+      "@op-engineering/op-sqlite": {
+        "optional": true
+      }
+    },
+    "peerDependenciesMeta": null,
+    "license": "Apache-2.0",
+    "deprecated": null,
+    "published": "2026-03-27T17:06:27.140Z",
+    "type": "module",
+    "source": "https://registry.npmjs.org/drizzle-orm/0.45.2",
+    "integrity": "sha512-kY0BSaTNYWnoDMVoyY8uxmyHjpJW1geOmBMdSSicKo9CIIWkSxMIj2rkeSR51b8KAPB7m+qysjuHme5nKP+E5Q=="
+  },
+  "drizzle-kit": {
+    "version": "0.31.10",
+    "engines": null,
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-03-17T09:31:40.190Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/drizzle-kit/0.31.10",
+    "integrity": "sha512-7OZcmQUrdGI+DUNNsKBn1aW8qSoKuTH7d0mYgSP8bAzdFzKoovxEFnoGQp2dVs82EOJeYycqRtciopszwUf8bw=="
+  },
+  "pg": {
+    "version": "8.23.0",
+    "engines": {
+      "node": ">= 16.0.0"
+    },
+    "peers": {
+      "pg-native": ">=3.0.1"
+    },
+    "peerDependencies": null,
+    "peerMeta": {
+      "pg-native": {
+        "optional": true
+      }
+    },
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-08-08T19:27:05.108Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/pg/8.23.0",
+    "integrity": "sha512-Ip2EQCngowJLGOfCwkFhPXU7/ljlhn6Rxlmy4XYfL2Y+vyRM59+8uR2xqRWKdYmbXmxCFOAmKxBuSUCdF34qLg=="
+  },
+  "@types/pg": {
+    "version": "8.23.1",
+    "engines": null,
+    "peers": {},
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-08-17T20:10:18.296Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/@types/pg/8.23.1",
+    "integrity": "sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A=="
+  },
+  "pg-boss": {
+    "version": "12.33.1",
+    "engines": {
+      "node": ">=22.12.0"
+    },
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-17T17:38:47.870Z",
+    "type": "module",
+    "source": "https://registry.npmjs.org/pg-boss/12.33.1",
+    "integrity": "sha512-u0DdaO4DsDV2TeuOeie2pXxmoYmO84CRlAX/7AEdzpf3y+NOEjt+As714UmzaCNTgnKdcvLItnN9AZklsjzOLQ=="
+  },
+  "octokit": {
+    "version": "5.0.5",
+    "engines": {
+      "node": ">= 20"
+    },
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2025-10-31T02:27:34.676Z",
+    "type": "module",
+    "source": "https://registry.npmjs.org/octokit/5.0.5",
+    "integrity": "sha512-4+/OFSqOjoyULo7eN7EA97DE0Xydj/PW5aIckxqQIoFjFwqXKuFCvXUJObyJfBF9Khu4RL/jlDRI9FPaMGfPnw=="
+  },
+  "vitest": {
+    "version": "5.0.1",
+    "engines": {
+      "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+    },
+    "peers": {
+      "vite": "^6.4.0 || ^7.0.0 || ^8.0.0",
+      "jsdom": "*",
+      "happy-dom": "*",
+      "@vitest/ui": "5.0.1",
+      "@types/node": "^22.0.0 || >=24.0.0",
+      "@edge-runtime/vm": "*",
+      "@opentelemetry/api": "^1.9.0",
+      "@vitest/coverage-v8": "5.0.1",
+      "@vitest/browser-preview": "5.0.1",
+      "@vitest/coverage-istanbul": "5.0.1",
+      "@vitest/browser-playwright": "5.0.1",
+      "@vitest/browser-webdriverio": "^5.0.0-beta.5 || >=5.0.0"
+    },
+    "peerDependencies": null,
+    "peerMeta": {
+      "vite": {
+        "optional": false
+      },
+      "jsdom": {
+        "optional": true
+      },
+      "happy-dom": {
+        "optional": true
+      },
+      "@vitest/ui": {
+        "optional": true
+      },
+      "@types/node": {
+        "optional": true
+      },
+      "@edge-runtime/vm": {
+        "optional": true
+      },
+      "@opentelemetry/api": {
+        "optional": true
+      },
+      "@vitest/coverage-v8": {
+        "optional": true
+      },
+      "@vitest/browser-preview": {
+        "optional": true
+      },
+      "@vitest/coverage-istanbul": {
+        "optional": true
+      },
+      "@vitest/browser-playwright": {
+        "optional": true
+      },
+      "@vitest/browser-webdriverio": {
+        "optional": true
+      }
+    },
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-15T08:49:35.830Z",
+    "type": "module",
+    "source": "https://registry.npmjs.org/vitest/5.0.1",
+    "integrity": "sha512-iA95lQbKEkvrtTkdAgnWbXfbipWiiWe/hDl2P5tMi6WFwD76G0NxXAGp/M9EOcYupeGJRr6wppMc7CoA41TQjg=="
+  },
+  "@playwright/test": {
+    "version": "1.63.0",
+    "engines": {
+      "node": ">=20"
+    },
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "Apache-2.0",
+    "deprecated": null,
+    "published": "2026-09-04T22:44:00.304Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/@playwright/test/1.63.0",
+    "integrity": "sha512-oxMK4vllB9RK5NQ2l1pq1IfOf2AvnEuj/vYGDj0H2nMtmtZpKtCwt/l00GEO6xjGfpBNAvjovvYdCm50dRQkpQ=="
+  },
+  "@types/node": {
+    "version": "24.13.5",
+    "engines": null,
+    "peers": null,
+    "peerDependencies": {},
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-15T20:37:51.965Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/@types/node/24.13.5",
+    "integrity": "sha512-TXyindR+lBr22aJIdMQzCFHPHR6cR4js838mRDCSz5hOKWZvZwsXSSiXDmjRj4iJmgl+sR9O+1mkoVBSMadNug=="
+  },
+  "@types/react": {
+    "version": "19.3.0",
+    "engines": null,
+    "peers": {},
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-09T18:08:49.750Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/@types/react/19.3.0",
+    "integrity": "sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg=="
+  },
+  "@types/react-dom": {
+    "version": "19.3.0",
+    "engines": null,
+    "peers": {
+      "@types/react": "^19.3.0"
+    },
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-09-09T18:07:51.886Z",
+    "type": null,
+    "source": "https://registry.npmjs.org/@types/react-dom/19.3.0",
+    "integrity": "sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q=="
+  },
+  "tsx": {
+    "version": "4.23.13",
+    "engines": {
+      "node": ">=18.0.0"
+    },
+    "peers": null,
+    "peerDependencies": null,
+    "peerMeta": null,
+    "peerDependenciesMeta": null,
+    "license": "MIT",
+    "deprecated": null,
+    "published": "2026-08-30T00:46:16.265Z",
+    "type": "module",
+    "source": "https://registry.npmjs.org/tsx/4.23.13",
+    "integrity": "sha512-BL5MGkRln6aDYhb0xbQlEAGw743BaZYWdbWtdJOBriYJboKgUUYCadFp2/FpBBZquBC/ezNBn7wMMPx7FDZUDw=="
+  }
+}

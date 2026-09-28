@@ -1,0 +1,16 @@
+{
+  "run": "rr03b_1790556436912_6e99dd",
+  "status": "FAIL",
+  "source": "isolated local PostgreSQL + loopback provider + real child process crashes",
+  "checks": [],
+  "processEvents": [],
+  "negativeControls": [],
+  "transactionObservations": [],
+  "sourceHashes": {},
+  "githubCalls": 0,
+  "failure": {
+    "name": "Error",
+    "message": "connect ECONNREFUSED 127.0.0.1:54329"
+  },
+  "finishedAt": "2026-09-28T00:47:16.928Z"
+}
