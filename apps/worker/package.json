@@ -1,0 +1,10 @@
+{
+  "name": "@classroom/worker",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@classroom/shared": "*",
+    "pg-boss": "12.33.1"
+  },
+  "version": "0.0.0"
+}
