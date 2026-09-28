@@ -1,0 +1,43 @@
+{
+  "source": "real GitHub API and restricted local PostgreSQL",
+  "observedAt": "2026-09-18T17:22:16.573Z",
+  "checks": [],
+  "providerObservationIncomplete": true,
+  "installationRows": [
+    {
+      "app_id": "4990040",
+      "installation_id": "162753561",
+      "account_id": "330894124",
+      "capability": "invalidated"
+    }
+  ],
+  "lifecycleReceipts": [
+    {
+      "app_id": "4990040",
+      "delivery_id": "7aa063f0-b385-11f1-9817-7557b401f5ab",
+      "installation_id": "162753561",
+      "event": "installation",
+      "digest": "31f072a533aef3701a2d2b9e90cce606ddea1ca114e8d00aa94bf059358c3f61",
+      "status": "received",
+      "received_at": "2026-09-18T17:21:29.122Z"
+    },
+    {
+      "app_id": "4990040",
+      "delivery_id": "unsuspend",
+      "installation_id": "162753561",
+      "event": "installation",
+      "digest": "07f94f563aca2ae7dc7deb6d42270a164ae212ecf970c1a2370ba7960b55802a",
+      "status": "received",
+      "received_at": "2026-09-18T16:35:48.791Z"
+    },
+    {
+      "app_id": "4990040",
+      "delivery_id": "concurrent",
+      "installation_id": "162753561",
+      "event": "installation",
+      "digest": "37f22533cd58f2c44969112a251957f65c2e1664d14ed80dcd7b4fd46c2ea992",
+      "status": "received",
+      "received_at": "2026-09-18T16:35:48.634Z"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "source": "real GitHub read-only comparison of existing target",
+  "at": "2026-09-19T01:07:15.366Z",
+  "target": "rr03-generated-1789779803890",
+  "status": "incomplete",
+  "scope": [
+    {
+      "id": 1375855376,
+      "name": "rr03-allowed",
+      "ownerId": 330894124,
+      "private": true
+    },
+    {
+      "id": 1376587196,
+      "name": "rr03-generated-1789779803890",
+      "ownerId": 330894124,
+      "private": true
+    }
+  ],
+  "targetId": 1376587196,
+  "httpStatus": 409,
+  "tokenCleanup": 204
+}

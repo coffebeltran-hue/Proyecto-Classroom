@@ -1,0 +1,26 @@
+{
+  "source": "restricted PostgreSQL observation after Juan unsuspended installation",
+  "observedAt": "2026-09-18T17:24:27.249Z",
+  "installation": [
+    {
+      "app_id": "4990040",
+      "installation_id": "162753561",
+      "account_id": "330894124",
+      "capability": "verification-required"
+    }
+  ],
+  "receipts": [
+    {
+      "delivery_id": "d0903510-b385-11f1-81f5-36960ee2c360",
+      "event": "installation",
+      "digest": "a59a58e9c3bc199a9cbd0b6e7f56c92e62df7b68b697f325798a7e7dfcbde41a",
+      "received_at": "2026-09-18T17:23:53.260Z"
+    },
+    {
+      "delivery_id": "7aa063f0-b385-11f1-9817-7557b401f5ab",
+      "event": "installation",
+      "digest": "31f072a533aef3701a2d2b9e90cce606ddea1ca114e8d00aa94bf059358c3f61",
+      "received_at": "2026-09-18T17:21:29.122Z"
+    }
+  ]
+}

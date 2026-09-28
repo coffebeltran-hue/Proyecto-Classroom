@@ -72,3 +72,46 @@ Only focused source/acceptance checks were performed; no broad multi-agent revie
 Juan subsequently authorized bounded RR-02 infrastructure implementation and disposable local experiments. [RR-02 PASS](RR-02.md) supersedes the earlier pending queue-baseline bullet: PostgreSQL 18.6/pg-boss 12.33.1 schema 42 passed restricted-role, migration/replay/rollback, queue maintenance/lifecycle/crash/retry and same-cluster logical restore checks. Typecheck/build and Vitest 6/6 passed; frontend/API behavior was unchanged and Playwright was deliberately not repeated. Dependency graph unchanged; no repeat RR-01 installation.
 
 This does not wire business jobs into the idle worker or adopt AD-12–18. Separate owner credentials and explicit maintenance execution were proved, not a hosting scheduler. Real upgrade, production/PITR, load, provider and ACR proofs remain pending. RR-03–07/OQ-10–13 open, RR-08 Future, R-01 unadopted. Next recommended gate is separately authorized RR-03; no business feature or provider resource was started.
+
+### RR-03 checkpoint — 2026-09-18
+FACT: [RR-03](RR-03.md) records real App/install/private scope, browser OAuth, live ping/dedup and suspension/reactivation/personal-revocation receipts plus local restricted persistence/tests. Status PARTIAL: old-token negative/race and broader template/collaborator integration remain unproved. No ACR operational closure, AD adoption or business implementation authorization follows. Earlier pending-provider statements are historical; use the report's final bounded result. No RR04+ started.
+
+
+### RR-03 token-negative checkpoint — 2026-09-18
+FACT: same installation token observed200 before revocation, DELETE204, transient200 after, then401 about4.55s later in the bounded run. Immediate rejection failed and remains recorded. [RR-03 report](RR-03.md) retains both runs and reproducible script. Status PARTIAL: old user token unavailable; acquiring a new one requires an explicit exception to the current no-repeat-OAuth instruction and a memory-only probe before manual revocation. Broader ACR002/AD17 provider proofs remain unexecuted. No automatic downstream gate or implementation authorization.
+
+### RR-03 user-token probe ready — 2026-09-18
+Juan authorized the limited new OAuth acquisition exception. Isolated static-token probe prepared;6 new simulated tests, typecheck and launcher syntax passed. Real test awaits browser acquisition and then a separate manual revocation checkpoint. No permission changes required for this step. [RR-03](RR-03.md) contains exact run instructions and15min hold/60sec observation bounds. RR-03 remains PARTIAL, no downstream authorization.
+
+### RR-03 same-user-token rejection proved — 2026-09-18
+Real baseline200 then provider401 on the same memory-only user token after manual revocation is recorded in [RR-03](RR-03.md). Process exited and dropped token;240ms measures request observation, not revocation propagation. No further OAuth required. Whole gate PARTIAL: collaborators/invitations and template reproduction await scoped Administration-write permission and controlled test resources. No AD adoption or RR04 authorization.
+
+### RR-03 invitations — pending manual acceptance
+Real read-invitation create/list/cancel and final noaccess passed; one new controlled read invitation333732138 now awaits coffebeltran-maker acceptance for effective-access removal proof. [RR-03](RR-03.md) records evidence and cleanup obligation. Template flag remainsfalse; no template resources generated. Keep Administrationwrite until tests/cleanup finish, then request user rollback and verify. RR03 PARTIAL.
+
+### RR-03 collaborator cleanup verified
+Live accepted readpermission verified; collaborator removal204 followed by404/permissionnone and zero pending invitations for coffebeltran-maker. Evidence in [RR-03](RR-03.md). Basic invite/grant/removal proof complete, no claim of full late-effect/crash protocol proof. Template setup remains manual prerequisite; Administration rollback follows remaining template work. RR03 PARTIAL.
+
+### RR-03 template checkpoint
+Source template/marker validated; one private generation attempt returned422 for rr03-generated-1789779803890. No destination ID or content-equivalence proof. [RR-03](RR-03.md) preserves initial whitespace precheck and provider failure. Waiting for owner verification of exact target existence before any further create attempt; no automatic permission expansion. RR03 PARTIAL.
+
+### RR-03 existing target recovery
+Juan confirms generated target exists; fresh selected-scope token lists only source and cannot read target404. Waiting for addition of only rr03-generated-1789779803890 to selected repositories; no extra permission level or new creation. Resume read-only comparison against saved source manifest. RR03 PARTIAL.
+
+### RR-03 target selected but reproduction unproved
+Target1376587196 is visible/private but commit read409 prevents comparison. Additional diagnostic generation was rejected by automatic approval review as outside the single-generation authorization; no second request ran. RR03 PARTIAL pending explicit diagnostic scope or ending with permission rollback. See [RR-03](RR-03.md).
+
+### RR-03 diagnostic01 failed — stopped
+Exactly one explicitly authorized extra generate returned422: cloning credential lacks permission to view clone repository. Sanitized status/message/errors and source IDs are in [RR-03](RR-03.md) / rr03-evidence/template-diagnostic-01.json. No target comparison, retry, permission expansion or third creation. Scope/token-restriction diagnosis remains unproved; RR03 PARTIAL. Manual Administration rollback and effective verification remain pending; no next gate authorized.
+
+### RR03 final user-token attempt: still PARTIAL
+
+The single authorized generation for rr03-user-template-final-01 returned201 (private ID1376607049), but immediate commit reads returned409 "Git Repository is empty." No delayed readiness polling or tree/workflow comparison completed; permanent emptiness is not established. Evidence: [template-user-final-01.json](rr03-evidence/template-user-final-01.json); interpretation/inventory: [RR-03.md](RR-03.md), final authorized user-token checkpoint. User token discarded; no retry/new OAuth, permission expansion, repository selection change, deletion or workflow dispatch. Original target1376587196 remains observed empty; diagnostic target existence is unresolved by credential-scoped404. Preserve original422 evidence. Template reproduction and final cleanup/permission rollback remain incomplete; no whole-gate PASS, AD17 adoption, ACR002 operational closure or RR04 authorization.
+
+### RR03 delayed template content verification PASS
+
+[Provider readback](rr03-evidence/template-user-final-readback.json) verifies final target commit/tree, complete manifest and marker SHA256 equal to the retained source snapshot. Prior user-token201 followed by transient409 is now a successful bounded reproduction proof. No new generation/OAuth or repository changes. Read-only installation token revoked204. Overall RR03 still PARTIAL pending target cleanup, diagnostic-target owner inventory and manual Administration rollback/effective verification; this does not prove installation-token generation or close ACR002 operationally. See latest RR-03 checkpoint.
+
+### RR03 owner cleanup and permission rollback completed
+
+Owner reports all three test targets deleted. [Fresh full-default-token verification](rr03-evidence/permission-rollback-final.json) proves only Contentsread/Metadataread, exactly rr03-allowed selected, allowed200/denied404, administrative invitation read403 and token revoke204. No remaining owner cleanup/permission action. This checkpoint PASS does not establish installation-token template generation or delayed-grant/crash recovery; architecture-wide RR03 remains PARTIAL with those explicit technical evidence limits. Delegated user-token reproduction remains PASS. Stop; no RR04 or implementation authorization.

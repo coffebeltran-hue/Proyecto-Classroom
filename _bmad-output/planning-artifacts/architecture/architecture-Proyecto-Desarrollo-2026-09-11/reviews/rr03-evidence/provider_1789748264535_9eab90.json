@@ -1,0 +1,64 @@
+{
+  "source": "real GitHub API",
+  "status": "fail",
+  "checks": [
+    {
+      "step": "app-identity-observation",
+      "status": "pass",
+      "expected": {
+        "appId": 4990040,
+        "slug": "classroom-rr03-juan",
+        "clientId": "Iv23li5WIsPocsfDyGbK"
+      },
+      "returned": {
+        "appId": {
+          "present": true,
+          "type": "number",
+          "value": 4990040
+        },
+        "slug": {
+          "present": true,
+          "type": "string",
+          "value": "classroom-rr03-juan"
+        },
+        "clientId": {
+          "present": true,
+          "type": "string",
+          "value": "Iv23li5WIsPocsfDyGbK"
+        }
+      }
+    },
+    {
+      "step": "app-identity",
+      "status": "pass",
+      "appId": 4990040,
+      "slug": "classroom-rr03-juan"
+    },
+    {
+      "step": "installation-identity",
+      "status": "pass",
+      "appId": 4990040,
+      "installationId": 162753561,
+      "accountId": 330894124,
+      "accountType": "Organization",
+      "repositorySelection": "selected",
+      "contentsPermission": "read",
+      "suspended": false
+    }
+  ],
+  "fingerprints": {
+    "package-lock.json": "e7f8f02867ad56f38bb4ab20c7443faf0c45c3473cccef4acb267ceaba16c15b",
+    "packages/github/src/index.ts": "1085c97ed231a297491f7d69d297a7d8e9245d798f24b81ba3619882afada60d",
+    "scripts/rr03-provider-proof.mjs": "231c1abbba2028e150d2d91466a9e64f6cb4d92329c90ffc55dcc622aed6181d",
+    "node_modules/octokit/dist-src/index.js": "b3feca1a16ad520bb99cde6d0f00f70ef58b9aa0098acd31b27d3bb8c6df76ef",
+    "node_modules/@octokit/auth-app/dist-src/get-app-authentication.js": "33f414fafb12d5f6f814f6a02a49e8cc95d934fa2c6fd54d68b72dc7a74bf093",
+    "node_modules/@octokit/auth-app/dist-src/get-installation-authentication.js": "a7b75168883cc6c0990fc96fce3ce824a272847fac1d831a57439400c1410e69"
+  },
+  "versions": {
+    "node": "v24.21.0",
+    "octokit": "5.0.5"
+  },
+  "error": {
+    "code": "REPOSITORY_SCOPE_MISMATCH"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "mode": "cancel-invitation",
+  "status": "pass",
+  "appId": 4990040,
+  "installationId": 162753561,
+  "accountId": 330894124,
+  "repositoryId": 1375855376,
+  "checks": [
+    {
+      "step": "verified-app-installation-invitee",
+      "at": "2026-09-19T00:45:23.256Z",
+      "inviteeId": 331091390
+    },
+    {
+      "step": "baseline-no-invitation-no-access",
+      "at": "2026-09-19T00:45:24.841Z",
+      "inviteeId": 331091390,
+      "status": 404,
+      "expiresAt": "2026-09-19T01:46:04.000Z"
+    },
+    {
+      "step": "before-read-invitation",
+      "at": "2026-09-19T00:45:24.843Z",
+      "inviteeId": 331091390,
+      "permission": "pull"
+    },
+    {
+      "step": "created-read-invitation",
+      "at": "2026-09-19T00:45:25.159Z",
+      "invitationId": 333732122,
+      "inviteeId": 331091390,
+      "status": 201
+    },
+    {
+      "step": "listed-read-invitation-no-access",
+      "at": "2026-09-19T00:45:25.909Z",
+      "invitationId": 333732122,
+      "inviteeId": 331091390,
+      "status": 404
+    },
+    {
+      "step": "before-cleanup-invitation",
+      "at": "2026-09-19T00:45:26.171Z",
+      "invitationId": 333732122,
+      "inviteeId": 331091390
+    },
+    {
+      "step": "cleanup-invitation",
+      "at": "2026-09-19T00:45:26.494Z",
+      "invitationId": 333732122,
+      "status": 204
+    },
+    {
+      "step": "cleanup-no-invitation-no-access",
+      "at": "2026-09-19T00:45:27.469Z",
+      "inviteeId": 331091390,
+      "status": 404
+    },
+    {
+      "step": "own-token-revoked",
+      "at": "2026-09-19T00:45:27.681Z",
+      "status": 204
+    }
+  ],
+  "fingerprints": {
+    "scripts/rr03-collaborator-proof.mjs": "01de016b5ac56405912e9f79c207b82f8b035c944c99933678d721f6dc7b09f6",
+    "package-lock.json": "e7f8f02867ad56f38bb4ab20c7443faf0c45c3473cccef4acb267ceaba16c15b",
+    "node_modules/octokit/dist-src/index.js": "b3feca1a16ad520bb99cde6d0f00f70ef58b9aa0098acd31b27d3bb8c6df76ef",
+    "node_modules/@octokit/auth-app/dist-src/get-app-authentication.js": "33f414fafb12d5f6f814f6a02a49e8cc95d934fa2c6fd54d68b72dc7a74bf093"
+  },
+  "versions": {
+    "node": "v24.21.0",
+    "octokit": "5.0.5"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "status": "pass",
+  "observations": [
+    {
+      "path": "/installation/repositories?per_page=100",
+      "status": 200,
+      "at": "2026-09-19T01:50:16.771Z"
+    },
+    {
+      "path": "/repos/classroom-rr03-juan/rr03-allowed",
+      "status": 200,
+      "at": "2026-09-19T01:50:17.043Z"
+    },
+    {
+      "path": "/repos/classroom-rr03-juan/rr03-denied",
+      "status": 404,
+      "at": "2026-09-19T01:50:17.228Z"
+    },
+    {
+      "path": "/repos/classroom-rr03-juan/rr03-allowed/invitations?per_page=1",
+      "status": 403,
+      "at": "2026-09-19T01:50:17.413Z"
+    }
+  ],
+  "installation": {
+    "id": 162753561,
+    "appId": 4990040,
+    "accountId": 330894124,
+    "selection": "selected",
+    "permissions": {
+      "contents": "read",
+      "metadata": "read"
+    }
+  },
+  "tokenPermissions": {
+    "contents": "read",
+    "metadata": "read"
+  },
+  "repositoryIds": [
+    1375855376
+  ],
+  "tokenRevocationStatus": 204
+}
