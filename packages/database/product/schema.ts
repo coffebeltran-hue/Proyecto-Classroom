@@ -77,6 +77,7 @@ export const oauthAttempts = pgTable(
     id: uuid('id').primaryKey().defaultRandom(),
 
     stateHash: text('state_hash').notNull(),
+    bindingHash: text('binding_hash').notNull(),
 
     createdAt: timestamp('created_at', { withTimezone: true })
       .notNull()

@@ -23,43 +23,52 @@ async function rollback(client: PoolClient) {
 
 export function createAuthRepository(pool: Pool) {
   return Object.freeze({
-    async createOAuthAttempt(state: string): Promise<void> {
-      const stateHash = sha256(state);
+    async createOAuthAttempt(
+  state: string,
+  binding: string,
+): Promise<void> {
+  const stateHash = sha256(state);
+  const bindingHash = sha256(binding);
 
       try {
         await pool.query({
           name: 'auth-oauth-attempt-create',
           text: `
-            INSERT INTO oauth_attempts(state_hash, expires_at)
-            VALUES ($1, now() + interval '10 minutes')
-          `,
-          values: [stateHash],
+  INSERT INTO oauth_attempts(state_hash, binding_hash, expires_at)
+  VALUES ($1, $2, now() + interval '10 minutes')
+`,
+values: [stateHash, bindingHash],
         });
       } catch {
         throw new Error('AUTH_STORAGE_UNAVAILABLE');
       }
     },
 
-    async consumeOAuthAttempt(state: string): Promise<boolean> {
-      const stateHash = sha256(state);
+    async consumeOAuthAttempt(
+  state: string,
+  binding: string,
+): Promise<boolean> {
+  const stateHash = sha256(state);
+  const bindingHash = sha256(binding);
 
       try {
         const result = await pool.query({
-          name: 'auth-oauth-attempt-consume',
-          text: `
-            UPDATE oauth_attempts
-               SET consumed_at = now()
-             WHERE state_hash = $1
-               AND consumed_at IS NULL
-               AND expires_at > now()
-            RETURNING id
+      name: 'auth-oauth-attempt-consume',
+      text: `
+        UPDATE oauth_attempts
+           SET consumed_at = now()
+         WHERE state_hash = $1
+           AND binding_hash = $2
+           AND consumed_at IS NULL
+           AND expires_at > now()
+        RETURNING id
           `,
-          values: [stateHash],
-        });
+          values: [stateHash, bindingHash],
+    });
 
-        return result.rowCount === 1;
-      } catch {
-        throw new Error('AUTH_STORAGE_UNAVAILABLE');
+    return result.rowCount === 1;
+  } catch {
+    throw new Error('AUTH_STORAGE_UNAVAILABLE');
       }
     },
 
