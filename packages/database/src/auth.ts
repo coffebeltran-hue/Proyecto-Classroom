@@ -75,9 +75,10 @@ values: [stateHash, bindingHash],
     async resolveGitHubIdentity(
       identity: GitHubIdentityInput,
     ): Promise<AuthenticatedUser> {
-      const client = await pool.connect();
+      let client: PoolClient | undefined;
 
       try {
+        client = await pool.connect();
         await client.query('BEGIN');
 
         /*
@@ -162,10 +163,13 @@ values: [stateHash, bindingHash],
           avatarUrl: identity.avatarUrl,
         };
       } catch {
-        await rollback(client);
+        if (client) {
+          await rollback(client);
+        }
+
         throw new Error('AUTH_STORAGE_UNAVAILABLE');
       } finally {
-        client.release();
+        client?.release();
       }
     },
 
@@ -175,17 +179,23 @@ values: [stateHash, bindingHash],
     }> {
       const secret = randomBytes(32).toString('base64url');
       const secretHash = sha256(secret);
-      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
       try {
-        await pool.query({
+        const result = await pool.query<{ expires_at: Date }>({
           name: 'auth-session-create',
           text: `
             INSERT INTO sessions(user_id, secret_hash, expires_at)
-            VALUES ($1, $2, $3)
+            VALUES ($1, $2, now() + interval '7 days')
+            RETURNING expires_at
           `,
-          values: [userId, secretHash, expiresAt],
+          values: [userId, secretHash],
         });
+
+        const expiresAt = result.rows[0]?.expires_at;
+
+        if (!(expiresAt instanceof Date)) {
+          throw new Error('AUTH_SESSION_EXPIRY_INVALID');
+        }
 
         return { secret, expiresAt };
       } catch {
