@@ -1,6 +1,21 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+
+import {
+  AppShell,
+  type AdminPage,
+} from './components/AppShell';
+import { AdminHomePage } from './pages/AdminHomePage';
+import { AdminUsersPage } from './pages/AdminUsersPage';
+import { AdminMembersPage } from './pages/AdminMembersPage';
+
 import './style.css';
+
+type InstitutionRole = 'ADMIN' | 'TEACHER' | 'STUDENT';
+type AcademicIdentityStatus =
+  | 'PENDING'
+  | 'VERIFIED'
+  | 'REJECTED';
 
 type CurrentUser = {
   id: string;
@@ -11,6 +26,26 @@ type CurrentUser = {
   };
   academicIdentity: null | {
     displayName?: string;
+  };
+  institutions: Array<{
+    id: string;
+    name: string;
+    slug: string;
+    roles: InstitutionRole[];
+    academicIdentity: null | {
+      institutionalIdentifier: string;
+      status: AcademicIdentityStatus;
+    };
+  }>;
+  accessRequest: null | {
+    id: string;
+    institution: {
+      id: string;
+      name: string;
+      slug: string;
+    };
+    status: 'PENDING' | 'APPROVED' | 'DENIED';
+    assignedRole: 'TEACHER' | 'STUDENT' | null;
   };
 };
 
@@ -31,9 +66,48 @@ function GitHubIcon() {
   );
 }
 
+function EmptyAdminPage({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="admin-page">
+      <section className="page-heading">
+        <div>
+          <p className="page-kicker">ADMINISTRACIÓN</p>
+          <h1>{title}</h1>
+          <p>{description}</p>
+        </div>
+      </section>
+
+      <section className="admin-panel">
+        <div className="empty-admin-state large">
+          <div className="empty-admin-letter">
+            {title.charAt(0)}
+          </div>
+
+          <strong>Aún no hay información para mostrar</strong>
+
+          <p>
+            Esta sección se conectará con datos reales de VMAT.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function App() {
-  const [auth, setAuth] = useState<AuthState>({ status: 'loading' });
+  const [auth, setAuth] = useState<AuthState>({
+    status: 'loading',
+  });
+
   const [loggingOut, setLoggingOut] = useState(false);
+  const [activePage, setActivePage] =
+    useState<AdminPage>('home');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,11 +126,23 @@ function App() {
           throw new Error('Unable to load session');
         }
 
-        const body = (await response.json()) as { user: CurrentUser };
-        setAuth({ status: 'authenticated', user: body.user });
+        const body = (await response.json()) as {
+          user: CurrentUser;
+        };
+
+        setAuth({
+          status: 'authenticated',
+          user: body.user,
+        });
       })
       .catch(error => {
-        if (error instanceof DOMException && error.name === 'AbortError') return;
+        if (
+          error instanceof DOMException &&
+          error.name === 'AbortError'
+        ) {
+          return;
+        }
+
         setAuth({ status: 'error' });
       });
 
@@ -72,7 +158,9 @@ function App() {
         credentials: 'same-origin',
       });
 
-      if (!response.ok) throw new Error('Logout failed');
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
 
       setAuth({ status: 'anonymous' });
     } catch {
@@ -85,8 +173,10 @@ function App() {
   if (auth.status === 'loading') {
     return (
       <main className="center-screen">
-        <div className="loader" />
-        <p className="muted">Cargando VMAT…</p>
+        <div>
+          <div className="loader" />
+          <p className="muted">Cargando VMAT…</p>
+        </div>
       </main>
     );
   }
@@ -98,20 +188,25 @@ function App() {
           <div className="brand-mark">V</div>
 
           <p className="eyebrow">VMAT CLASSROOM</p>
+
           <h1>Tu aula, conectada con GitHub.</h1>
 
           <p className="auth-description">
-            Gestiona cursos, entregas y repositorios desde un solo lugar.
+            Gestiona cursos, entregas y repositorios desde un
+            solo lugar.
           </p>
 
-          <a className="github-button" href="/auth/github">
+          <a
+            className="github-button"
+            href="/auth/github"
+          >
             <GitHubIcon />
             Continuar con GitHub
           </a>
 
           <p className="auth-note">
-            GitHub se utiliza para autenticar tu cuenta. Tu identidad académica
-            se vincula por separado.
+            GitHub autentica tu cuenta. Los permisos académicos
+            se gestionan de forma independiente en VMAT.
           </p>
         </section>
       </main>
@@ -124,166 +219,209 @@ function App() {
         <div className="error-card">
           <p className="eyebrow">VMAT</p>
           <h1>No pudimos cargar tu sesión.</h1>
+
           <p className="muted">
-            Comprueba que la API esté ejecutándose e inténtalo nuevamente.
+            Comprueba que la API esté ejecutándose e inténtalo
+            nuevamente.
           </p>
-          <button onClick={() => window.location.reload()}>Reintentar</button>
+
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+          >
+            Reintentar
+          </button>
         </div>
       </main>
     );
   }
 
   const { user } = auth;
+  const institution = user.institutions[0];
+  const accessRequest = user.accessRequest;
 
-  return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <div className="sidebar-brand">
-          <div className="brand-mark small">V</div>
-          <strong>VMAT</strong>
-        </div>
+  if (!institution && accessRequest?.status === 'PENDING') {
+    return (
+      <main className="center-screen">
+        <div className="error-card">
+          <p className="eyebrow">VMAT</p>
+          <h1>Solicitud pendiente</h1>
 
-        <nav>
-          <a className="nav-item active" href="#dashboard">
-            <span>⌂</span>
-            Inicio
-          </a>
-          <a className="nav-item disabled" href="#courses">
-            <span>□</span>
-            Cursos
-          </a>
-          <a className="nav-item disabled" href="#assignments">
-            <span>✓</span>
-            Actividades
-          </a>
-          <a className="nav-item disabled" href="#repositories">
-            <span>⌘</span>
-            Repositorios
-          </a>
-        </nav>
+          <p className="muted">
+            Tu cuenta de GitHub está autenticada. Tu solicitud
+            para ingresar a {accessRequest.institution.name}{' '}
+            está esperando la aprobación de un administrador.
+          </p>
 
-        <div className="sidebar-footer">
-          <span className="environment-dot" />
-          Desarrollo local
-        </div>
-      </aside>
-
-      <main className="dashboard">
-        <header className="topbar">
-          <div>
-            <p className="eyebrow">DASHBOARD</p>
-            <h1>Hola, {user.github.login}</h1>
-          </div>
-
-          <div className="profile">
-            {user.github.avatarUrl ? (
-              <img src={user.github.avatarUrl} alt="" />
-            ) : (
-              <div className="avatar-placeholder">
-                {user.github.login.charAt(0).toUpperCase()}
-              </div>
-            )}
-
-            <div>
-              <strong>{user.github.login}</strong>
-              <span>GitHub conectado</span>
-            </div>
-          </div>
-        </header>
-
-        <section className="hero-panel">
-          <div>
-            <span className="status-pill success">GitHub conectado</span>
-            <h2>Tu espacio de trabajo está listo.</h2>
-            <p>
-              La autenticación de VMAT ya está conectada con GitHub y mantiene
-              una sesión segura en el servidor.
-            </p>
-          </div>
-
-          <div className="github-orb">
-            <GitHubIcon />
-          </div>
-        </section>
-
-        <section className="dashboard-grid">
-          <article className="panel">
-            <div className="panel-heading">
-              <div>
-                <p className="eyebrow">CUENTA</p>
-                <h2>Identidad</h2>
-              </div>
-              <span className="status-pill success">Activa</span>
-            </div>
-
-            <div className="identity-row">
-              {user.github.avatarUrl && (
-                <img src={user.github.avatarUrl} alt="" />
-              )}
-              <div>
-                <strong>@{user.github.login}</strong>
-                <span>GitHub ID · {user.github.id}</span>
-              </div>
-            </div>
-          </article>
-
-          <article className="panel">
-            <div className="panel-heading">
-              <div>
-                <p className="eyebrow">INSTITUCIÓN</p>
-                <h2>Identidad académica</h2>
-              </div>
-              <span className="status-pill pending">Pendiente</span>
-            </div>
-
-            <p className="muted">
-              Tu cuenta de GitHub está autenticada, pero todavía no ha sido
-              vinculada con una identidad académica.
-            </p>
-
-            <button className="secondary-button" disabled>
-              Vincular identidad
-            </button>
-          </article>
-
-          <article className="panel wide">
-            <div className="panel-heading">
-              <div>
-                <p className="eyebrow">CURSOS</p>
-                <h2>Tus aulas</h2>
-              </div>
-            </div>
-
-            <div className="empty-state">
-              <div className="empty-icon">+</div>
-              <strong>Aún no tienes cursos vinculados</strong>
-              <span>
-                Los cursos aparecerán aquí cuando tu identidad académica esté
-                configurada.
-              </span>
-            </div>
-          </article>
-        </section>
-
-        <footer className="account-footer">
-          <span>
-            Sesión iniciada como <strong>@{user.github.login}</strong>
+          <span className="status-pill pending">
+            Pendiente de aprobación
           </span>
 
+          <div>
+            <button
+              type="button"
+              className="logout-button"
+              onClick={logout}
+              disabled={loggingOut}
+            >
+              {loggingOut
+                ? 'Cerrando sesión…'
+                : 'Cerrar sesión'}
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!institution && accessRequest?.status === 'DENIED') {
+    return (
+      <main className="center-screen">
+        <div className="error-card">
+          <p className="eyebrow">VMAT</p>
+          <h1>Acceso no autorizado</h1>
+
+          <p className="muted">
+            Tu solicitud para ingresar a{' '}
+            {accessRequest.institution.name} fue denegada.
+          </p>
+
           <button
+            type="button"
             className="logout-button"
             onClick={logout}
             disabled={loggingOut}
           >
-            {loggingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}
+            {loggingOut
+              ? 'Cerrando sesión…'
+              : 'Cerrar sesión'}
           </button>
-        </footer>
+        </div>
       </main>
-    </div>
+    );
+  }
+
+  if (!institution) {
+    return (
+      <main className="center-screen">
+        <div className="error-card">
+          <p className="eyebrow">VMAT</p>
+          <h1>Cuenta sin institución</h1>
+
+          <p className="muted">
+            Tu cuenta está autenticada, pero no tiene una
+            institución ni una solicitud de acceso asociada.
+          </p>
+
+          <button
+            type="button"
+            className="logout-button"
+            onClick={logout}
+            disabled={loggingOut}
+          >
+            {loggingOut
+              ? 'Cerrando sesión…'
+              : 'Cerrar sesión'}
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  if (!institution.roles.includes('ADMIN')) {
+    return (
+      <main className="center-screen">
+        <div className="error-card">
+          <p className="eyebrow">VMAT</p>
+          <h1>Perfil académico registrado</h1>
+
+          <p className="muted">
+            Esta cuenta pertenece a {institution.name}, pero la
+            interfaz para su rol todavía no está habilitada en
+            esta etapa del desarrollo.
+          </p>
+
+          <button
+            type="button"
+            className="logout-button"
+            onClick={logout}
+            disabled={loggingOut}
+          >
+            {loggingOut
+              ? 'Cerrando sesión…'
+              : 'Cerrar sesión'}
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  function renderAdminPage() {
+    switch (activePage) {
+      case 'users':
+        return (
+          <AdminUsersPage
+            institutionId={institution.id}
+            institutionName={institution.name}
+          />
+        );
+
+      case 'teachers':
+        return (
+          <AdminMembersPage
+            institutionId={institution.id}
+            institutionName={institution.name}
+            role="TEACHER"
+          />
+        );
+
+      case 'students':
+        return (
+          <AdminMembersPage
+            institutionId={institution.id}
+            institutionName={institution.name}
+            role="STUDENT"
+          />
+        );
+
+      case 'institution':
+        return (
+          <EmptyAdminPage
+            title="Institución"
+            description="Consulta y administra la configuración institucional."
+          />
+        );
+
+      case 'home':
+      default:
+        return (
+          <AdminHomePage
+            institutionName={institution.name}
+            githubLogin={user.github.login}
+          />
+        );
+    }
+  }
+
+  return (
+    <AppShell
+      activePage={activePage}
+      onNavigate={setActivePage}
+      githubLogin={user.github.login}
+      avatarUrl={user.github.avatarUrl}
+      institutionName={institution.name}
+      roles={institution.roles}
+      loggingOut={loggingOut}
+      onLogout={logout}
+    >
+      {renderAdminPage()}
+    </AppShell>
   );
 }
 
-createRoot(document.getElementById('root')!).render(
+createRoot(
+  document.getElementById('root')!,
+).render(
   <StrictMode>
     <App />
   </StrictMode>,

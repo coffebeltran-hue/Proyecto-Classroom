@@ -15,6 +15,20 @@
       "when": 1790698701718,
       "tag": "0001_sharp_longshot",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790884913665,
+      "tag": "0002_lethal_shriek",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790889053803,
+      "tag": "0003_superb_maddog",
+      "breakpoints": true
     }
   ]
 }

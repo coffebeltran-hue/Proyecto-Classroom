@@ -17,6 +17,24 @@ export interface AuthenticatedUser {
   avatarUrl: string | null;
 }
 
+export type InstitutionRole = 'ADMIN' | 'TEACHER' | 'STUDENT';
+
+export type AcademicIdentityStatus =
+  | 'PENDING'
+  | 'VERIFIED'
+  | 'REJECTED';
+
+export interface UserInstitutionContext {
+  id: string;
+  name: string;
+  slug: string;
+  roles: InstitutionRole[];
+  academicIdentity: {
+    institutionalIdentifier: string;
+    status: AcademicIdentityStatus;
+  } | null;
+}
+
 async function rollback(client: PoolClient) {
   await client.query('ROLLBACK').catch(() => {});
 }
@@ -239,6 +257,79 @@ values: [stateHash, bindingHash],
           login: row.login,
           avatarUrl: row.avatar_url,
         };
+      } catch {
+        throw new Error('AUTH_STORAGE_UNAVAILABLE');
+      }
+    },
+
+    async getUserAccessContext(
+      userId: string,
+    ): Promise<UserInstitutionContext[]> {
+      try {
+        const result = await pool.query<{
+          institution_id: string;
+          institution_name: string;
+          institution_slug: string;
+          role: InstitutionRole;
+          institutional_identifier: string | null;
+          academic_identity_status: AcademicIdentityStatus | null;
+        }>({
+          name: 'auth-user-access-context',
+          text: `
+            SELECT
+              i.id AS institution_id,
+              i.name AS institution_name,
+              i.slug AS institution_slug,
+              m.role,
+              ai.institutional_identifier,
+              ai.status AS academic_identity_status
+            FROM institution_memberships m
+            JOIN institutions i
+              ON i.id = m.institution_id
+            LEFT JOIN academic_identities ai
+              ON ai.user_id = m.user_id
+             AND ai.institution_id = m.institution_id
+            WHERE m.user_id = $1
+              AND m.status = 'ACTIVE'
+            ORDER BY i.name, m.role
+          `,
+          values: [userId],
+        });
+
+        const institutions = new Map<
+          string,
+          UserInstitutionContext
+        >();
+
+        for (const row of result.rows) {
+          let institution = institutions.get(row.institution_id);
+
+          if (!institution) {
+            institution = {
+              id: row.institution_id,
+              name: row.institution_name,
+              slug: row.institution_slug,
+              roles: [],
+              academicIdentity:
+                row.institutional_identifier &&
+                row.academic_identity_status
+                  ? {
+                      institutionalIdentifier:
+                        row.institutional_identifier,
+                      status: row.academic_identity_status,
+                    }
+                  : null,
+            };
+
+            institutions.set(row.institution_id, institution);
+          }
+
+          if (!institution.roles.includes(row.role)) {
+            institution.roles.push(row.role);
+          }
+        }
+
+        return [...institutions.values()];
       } catch {
         throw new Error('AUTH_STORAGE_UNAVAILABLE');
       }

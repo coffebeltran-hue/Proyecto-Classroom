@@ -1,4 +1,9 @@
-import { createDatabase, createAuthRepository } from '@classroom/database';
+import {
+  createDatabase,
+  createAdminRepository,
+  createAuthRepository,
+  createInstitutionAccessRepository,
+} from '@classroom/database';
 import { createGitHubAuth } from '@classroom/github';
 import { port } from '@classroom/shared';
 
@@ -37,6 +42,8 @@ try {
   database = createDatabase(process.env.DATABASE_URL);
 
   const auth = createAuthRepository(database.pool);
+  const access = createInstitutionAccessRepository(database.pool);
+  const admin = createAdminRepository(database.pool);
 
   const githubAuth = createGitHubAuth({
     clientId: requiredEnvironment('AUTH_GITHUB_CLIENT_ID'),
@@ -51,9 +58,12 @@ try {
 
   app = createApp({
     auth,
+    access,
+    admin,
     githubAuth,
     frontendOrigin,
     secureCookies,
+    defaultInstitutionSlug: 'unisabana',
   });
 
   const close = async () => {

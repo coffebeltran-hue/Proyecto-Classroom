@@ -31,7 +31,132 @@ function createDependencies() {
       login: 'octocat',
       avatarUrl: 'https://example.test/avatar.png',
     })),
+    getUserAccessContext: vi.fn(
+      async (): Promise<
+        Array<{
+          id: string;
+          name: string;
+          slug: string;
+          roles: Array<'ADMIN' | 'TEACHER' | 'STUDENT'>;
+          academicIdentity: null | {
+            institutionalIdentifier: string;
+            status: 'PENDING' | 'VERIFIED' | 'REJECTED';
+          };
+        }>
+      > => [],
+    ),
     revokeSession: vi.fn(async () => {}),
+  };
+
+  const access = {
+    ensurePendingRequest: vi.fn(async () => 'EXISTS' as const),
+    findAccessRequest: vi.fn(
+      async (): Promise<
+        | {
+            id: string;
+            institution: {
+              id: string;
+              name: string;
+              slug: string;
+            };
+            status: 'PENDING' | 'APPROVED' | 'DENIED';
+            assignedRole: 'TEACHER' | 'STUDENT' | null;
+          }
+        | null
+      > => null,
+    ),
+  };
+
+  const admin = {
+    listPendingAccessRequests: vi.fn(
+      async (): Promise<
+        | {
+            status: 'OK';
+            requests: Array<{
+              id: string;
+              userId: string;
+              githubLogin: string;
+              avatarUrl: string | null;
+              institutionId: string;
+              institutionName: string;
+              createdAt: Date;
+            }>;
+          }
+        | {
+            status: 'FORBIDDEN';
+          }
+      > => ({
+        status: 'OK',
+        requests: [],
+      }),
+    ),
+    listInstitutionMembers: vi.fn(
+      async (): Promise<
+        | {
+            status: 'OK';
+            members: Array<{
+              membershipId: string;
+              userId: string;
+              githubLogin: string;
+              avatarUrl: string | null;
+              role: 'TEACHER' | 'STUDENT';
+              membershipStatus: 'ACTIVE';
+              joinedAt: Date;
+              institutionalIdentifier: string | null;
+              academicIdentityStatus:
+                | 'PENDING'
+                | 'VERIFIED'
+                | 'REJECTED'
+                | null;
+            }>;
+          }
+        | {
+            status: 'FORBIDDEN';
+          }
+      > => ({
+        status: 'OK',
+        members: [],
+      }),
+    ),
+    approveAccessRequest: vi.fn(
+      async (): Promise<
+        | {
+            status: 'APPROVED';
+            githubLogin: string;
+            role: 'TEACHER' | 'STUDENT';
+          }
+        | {
+            status: 'FORBIDDEN';
+          }
+        | {
+            status: 'NOT_FOUND';
+          }
+        | {
+            status: 'ALREADY_DECIDED';
+          }
+      > => ({
+        status: 'NOT_FOUND',
+      }),
+    ),
+    denyAccessRequest: vi.fn(
+      async (): Promise<
+        | {
+            status: 'DENIED';
+            githubLogin: string;
+          }
+        | {
+            status: 'FORBIDDEN';
+          }
+        | {
+            status: 'NOT_FOUND';
+          }
+        | {
+            status: 'ALREADY_DECIDED';
+          }
+      > => ({
+        status: 'NOT_FOUND',
+      }),
+    ),
   };
 
   const githubAuth = {
@@ -56,9 +181,12 @@ function createDependencies() {
 
   return {
     auth,
+    access,
+    admin,
     githubAuth,
     frontendOrigin: 'https://vmat.example',
     secureCookies: true,
+    defaultInstitutionSlug: 'unisabana',
   };
 }
 
@@ -429,12 +557,451 @@ describe('Auth v1 HTTP boundary', () => {
             avatarUrl: 'https://example.test/avatar.png',
           },
           academicIdentity: null,
+          institutions: [],
+          accessRequest: null,
         },
       });
 
       expect(dependencies.auth.findSession).toHaveBeenCalledWith(
         session,
       );
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('returns a pending institutional access request for an authenticated user', async () => {
+    const dependencies = createDependencies();
+
+    dependencies.access.findAccessRequest.mockResolvedValueOnce({
+      id: '33333333-3333-4333-8333-333333333333',
+      institution: {
+        id: '22222222-2222-4222-8222-222222222222',
+        name: 'Universidad de La Sabana',
+        slug: 'unisabana',
+      },
+      status: 'PENDING',
+      assignedRole: null,
+    });
+
+    const app = createApp(dependencies);
+
+    try {
+      const session = token('s');
+
+      const response = await app.inject({
+        method: 'GET',
+        url: '/me',
+        headers: {
+          cookie: `${SESSION_COOKIE}=${session}`,
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      expect(response.json().user.accessRequest).toEqual({
+        id: '33333333-3333-4333-8333-333333333333',
+        institution: {
+          id: '22222222-2222-4222-8222-222222222222',
+          name: 'Universidad de La Sabana',
+          slug: 'unisabana',
+        },
+        status: 'PENDING',
+        assignedRole: null,
+      });
+
+      expect(
+        dependencies.access.findAccessRequest,
+      ).toHaveBeenCalledWith(
+        '11111111-1111-4111-8111-111111111111',
+        'unisabana',
+      );
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('returns active institutional roles for the authenticated user', async () => {
+    const dependencies = createDependencies();
+
+    dependencies.auth.getUserAccessContext.mockResolvedValueOnce([
+      {
+        id: '22222222-2222-4222-8222-222222222222',
+        name: 'Universidad de La Sabana',
+        slug: 'unisabana',
+        roles: ['ADMIN'],
+        academicIdentity: null,
+      },
+    ]);
+
+    const app = createApp(dependencies);
+
+    try {
+      const session = token('s');
+
+      const response = await app.inject({
+        method: 'GET',
+        url: '/me',
+        headers: {
+          cookie: `${SESSION_COOKIE}=${session}`,
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      expect(response.json().user.institutions).toEqual([
+        {
+          id: '22222222-2222-4222-8222-222222222222',
+          name: 'Universidad de La Sabana',
+          slug: 'unisabana',
+          roles: ['ADMIN'],
+          academicIdentity: null,
+        },
+      ]);
+
+      expect(
+        dependencies.auth.getUserAccessContext,
+      ).toHaveBeenCalledWith(
+        '11111111-1111-4111-8111-111111111111',
+      );
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('lists pending access requests for an authorized administrator', async () => {
+    const dependencies = createDependencies();
+
+    dependencies.admin.listPendingAccessRequests.mockResolvedValueOnce({
+      status: 'OK',
+      requests: [
+        {
+          id: '33333333-3333-4333-8333-333333333333',
+          userId: '44444444-4444-4444-8444-444444444444',
+          githubLogin: 'pending-user',
+          avatarUrl: null,
+          institutionId: '22222222-2222-4222-8222-222222222222',
+          institutionName: 'Universidad de La Sabana',
+          createdAt: new Date('2026-10-01T20:00:00.000Z'),
+        },
+      ],
+    });
+
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/access-requests',
+        headers: {
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      expect(response.json().requests).toHaveLength(1);
+      expect(response.json().requests[0].githubLogin).toBe(
+        'pending-user',
+      );
+
+      expect(
+        dependencies.admin.listPendingAccessRequests,
+      ).toHaveBeenCalledWith(
+        '11111111-1111-4111-8111-111111111111',
+        '22222222-2222-4222-8222-222222222222',
+      );
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('rejects pending access request listing when administrator authorization fails', async () => {
+    const dependencies = createDependencies();
+
+    dependencies.admin.listPendingAccessRequests.mockResolvedValueOnce({
+      status: 'FORBIDDEN',
+    });
+
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/access-requests',
+        headers: {
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+      });
+
+      expect(response.statusCode).toBe(403);
+      expect(response.json()).toEqual({
+        error: 'FORBIDDEN',
+      });
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('rejects cross-origin access approval before the admin repository is called', async () => {
+    const dependencies = createDependencies();
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/access-requests/33333333-3333-4333-8333-333333333333/approve',
+        headers: {
+          origin: 'https://evil.example',
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+        payload: {
+          role: 'TEACHER',
+        },
+      });
+
+      expect(response.statusCode).toBe(403);
+      expect(response.json()).toEqual({
+        error: 'ORIGIN_FORBIDDEN',
+      });
+
+      expect(
+        dependencies.admin.approveAccessRequest,
+      ).not.toHaveBeenCalled();
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('rejects invalid academic roles before approving access', async () => {
+    const dependencies = createDependencies();
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/access-requests/33333333-3333-4333-8333-333333333333/approve',
+        headers: {
+          origin: 'https://vmat.example',
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+        payload: {
+          role: 'ADMIN',
+        },
+      });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.json()).toEqual({
+        error: 'INVALID_ROLE',
+      });
+
+      expect(
+        dependencies.admin.approveAccessRequest,
+      ).not.toHaveBeenCalled();
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('approves a pending access request with an allowed academic role', async () => {
+    const dependencies = createDependencies();
+
+    dependencies.admin.approveAccessRequest.mockResolvedValueOnce({
+      status: 'APPROVED',
+      githubLogin: 'pending-user',
+      role: 'TEACHER',
+    });
+
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/access-requests/33333333-3333-4333-8333-333333333333/approve',
+        headers: {
+          origin: 'https://vmat.example',
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+        payload: {
+          role: 'TEACHER',
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      expect(response.json()).toEqual({
+        decision: {
+          status: 'APPROVED',
+          githubLogin: 'pending-user',
+          role: 'TEACHER',
+        },
+      });
+
+      expect(
+        dependencies.admin.approveAccessRequest,
+      ).toHaveBeenCalledWith({
+        actorUserId:
+          '11111111-1111-4111-8111-111111111111',
+        institutionId:
+          '22222222-2222-4222-8222-222222222222',
+        requestId:
+          '33333333-3333-4333-8333-333333333333',
+        role: 'TEACHER',
+      });
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('denies a pending access request without creating an academic role', async () => {
+    const dependencies = createDependencies();
+
+    dependencies.admin.denyAccessRequest.mockResolvedValueOnce({
+      status: 'DENIED',
+      githubLogin: 'pending-user',
+    });
+
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/access-requests/33333333-3333-4333-8333-333333333333/deny',
+        headers: {
+          origin: 'https://vmat.example',
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      expect(response.json()).toEqual({
+        decision: {
+          status: 'DENIED',
+          githubLogin: 'pending-user',
+        },
+      });
+
+      expect(
+        dependencies.admin.denyAccessRequest,
+      ).toHaveBeenCalledWith({
+        actorUserId:
+          '11111111-1111-4111-8111-111111111111',
+        institutionId:
+          '22222222-2222-4222-8222-222222222222',
+        requestId:
+          '33333333-3333-4333-8333-333333333333',
+      });
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('lists active teachers for an authorized administrator', async () => {
+    const dependencies = createDependencies();
+
+    dependencies.admin.listInstitutionMembers.mockResolvedValueOnce({
+      status: 'OK',
+      members: [
+        {
+          membershipId:
+            '55555555-5555-4555-8555-555555555555',
+          userId:
+            '44444444-4444-4444-8444-444444444444',
+          githubLogin: 'teacher-user',
+          avatarUrl: null,
+          role: 'TEACHER',
+          membershipStatus: 'ACTIVE',
+          joinedAt: new Date(
+            '2026-10-01T20:30:00.000Z',
+          ),
+          institutionalIdentifier: null,
+          academicIdentityStatus: null,
+        },
+      ],
+    });
+
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/members?role=TEACHER',
+        headers: {
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      expect(response.json().members).toHaveLength(1);
+      expect(response.json().members[0].githubLogin).toBe(
+        'teacher-user',
+      );
+      expect(response.json().members[0].role).toBe(
+        'TEACHER',
+      );
+
+      expect(
+        dependencies.admin.listInstitutionMembers,
+      ).toHaveBeenCalledWith(
+        '11111111-1111-4111-8111-111111111111',
+        '22222222-2222-4222-8222-222222222222',
+        'TEACHER',
+      );
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('rejects invalid member role filters before querying the admin repository', async () => {
+    const dependencies = createDependencies();
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/members?role=ADMIN',
+        headers: {
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+      });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.json()).toEqual({
+        error: 'INVALID_ROLE',
+      });
+
+      expect(
+        dependencies.admin.listInstitutionMembers,
+      ).not.toHaveBeenCalled();
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('rejects institution member listing when administrator authorization fails', async () => {
+    const dependencies = createDependencies();
+
+    dependencies.admin.listInstitutionMembers.mockResolvedValueOnce({
+      status: 'FORBIDDEN',
+    });
+
+    const app = createApp(dependencies);
+
+    try {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/admin/institutions/22222222-2222-4222-8222-222222222222/members?role=STUDENT',
+        headers: {
+          cookie: `${SESSION_COOKIE}=${token('s')}`,
+        },
+      });
+
+      expect(response.statusCode).toBe(403);
+      expect(response.json()).toEqual({
+        error: 'FORBIDDEN',
+      });
     } finally {
       await app.close();
     }
