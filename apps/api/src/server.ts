@@ -1,11 +1,9 @@
-import {
-  createDatabase,
-  createAdminRepository,
-  createAuthRepository,
-  createInstitutionAccessRepository,
-} from '@classroom/database';
-import { createGitHubAuth } from '@classroom/github';
-import { port } from '@classroom/shared';
+import { Pool } from 'pg';
+
+import { createInstitutionAccessRepository } from '../../../packages/database/src/access.js';
+import { createAdminRepository } from '../../../packages/database/src/admin.js';
+import { createAuthRepository } from '../../../packages/database/src/auth.js';
+import { createGitHubAuth } from '../../../packages/github/src/index.js';
 
 import { createApp } from './app.js';
 
@@ -19,36 +17,45 @@ function requiredEnvironment(name: string): string {
   return value;
 }
 
-const database = createDatabase(process.env.DATABASE_URL);
+const databaseUrl = requiredEnvironment('DATABASE_URL');
 
-const auth = createAuthRepository(database.pool);
-const access = createInstitutionAccessRepository(database.pool);
-const admin = createAdminRepository(database.pool);
+const pool = new Pool({
+  connectionString: databaseUrl,
+  max: 2,
+  connectionTimeoutMillis: 5000,
+  idleTimeoutMillis: 1000,
+  statement_timeout: 5000,
+  query_timeout: 6000,
+});
+
+const auth = createAuthRepository(pool);
+const access = createInstitutionAccessRepository(pool);
+const admin = createAdminRepository(pool);
 
 const githubAuth = createGitHubAuth({
   clientId: requiredEnvironment('AUTH_GITHUB_CLIENT_ID'),
-  clientSecret: requiredEnvironment('AUTH_GITHUB_CLIENT_SECRET'),
+  clientSecret: requiredEnvironment(
+    'AUTH_GITHUB_CLIENT_SECRET',
+  ),
   callbackUrl: requiredEnvironment(
     'AUTH_GITHUB_CALLBACK_URL',
   ),
 });
-
-const frontendOrigin = requiredEnvironment(
-  'FRONTEND_ORIGIN',
-);
 
 const app = createApp({
   auth,
   access,
   admin,
   githubAuth,
-  frontendOrigin,
+  frontendOrigin: requiredEnvironment('FRONTEND_ORIGIN'),
   secureCookies: true,
   defaultInstitutionSlug: 'unisabana',
 });
 
+const port = Number(process.env.PORT ?? '3000');
+
 await app.listen({
-  port: port(process.env.PORT),
+  port,
   host: '0.0.0.0',
 });
 
