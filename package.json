@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "engines": {
-    "node": "24.21.0",
+    "node": "24.x",
     "npm": "11.19.0"
   },
   "packageManager": "npm@11.19.0",
@@ -19,6 +19,8 @@
     "build": "node scripts/build.mjs",
     "start:api": "node --env-file-if-exists=.env apps/api/dist/main.js",
     "start:worker": "node --env-file-if-exists=.env apps/worker/dist/main.js",
+    "db:product:generate": "drizzle-kit generate --config packages/database/product/drizzle.config.ts",
+    "db:product:migrate": "node --env-file-if-exists=.env --conditions=development --import tsx packages/database/src/migrate.ts",
     "db:check": "node --env-file-if-exists=.env --conditions=development --import tsx packages/database/src/check.ts",
     "rr02:generate": "drizzle-kit generate --config packages/database/rr02/drizzle.config.ts",
     "rr02:proof": "node --import tsx scripts/rr02-proof.mjs",

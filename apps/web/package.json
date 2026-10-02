@@ -3,9 +3,15 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@classroom/shared": "*",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "scripts": {
+    "build": "vite build --config vite.config.ts"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "6.1.1",
+    "vite": "8.3.0"
+  }
 }

@@ -1,3 +1,22 @@
+import { fileURLToPath } from 'node:url';
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-export default defineConfig({ root: 'apps/web', plugins: [react()], server: { host: '127.0.0.1', port: 5173, strictPort: true, proxy: { '/health': 'http://127.0.0.1:3001' } } });
+
+const webRoot = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  root: webRoot,
+  plugins: [react()],
+  server: {
+    host: '127.0.0.1',
+    port: 5173,
+    strictPort: true,
+    proxy: {
+      '/health': 'http://127.0.0.1:3001',
+      '/auth': 'http://127.0.0.1:3001',
+      '/me': 'http://127.0.0.1:3001',
+      '/admin': 'http://127.0.0.1:3001',
+    },
+  },
+});

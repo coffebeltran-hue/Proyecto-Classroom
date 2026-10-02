@@ -8,11 +8,50 @@ export function port(value: string | undefined, fallback = 3001): number {
 export function databaseUrl(value: string | undefined): string {
   try {
     if (!value) throw new Error();
+
     const url = new URL(value);
-    if (!['postgres:', 'postgresql:'].includes(url.protocol) || !url.hostname || !url.pathname.slice(1) || url.search || url.hash || (url.port && Number(url.port) < 1)) throw new Error();
+
+    if (
+      !['postgres:', 'postgresql:'].includes(url.protocol) ||
+      !url.hostname ||
+      !url.pathname.slice(1) ||
+      url.hash ||
+      (url.port && Number(url.port) < 1)
+    ) {
+      throw new Error();
+    }
+
+    const allowedParameters = new Set([
+      'sslmode',
+      'channel_binding',
+    ]);
+
+    for (const [name, parameterValue] of url.searchParams) {
+      if (!allowedParameters.has(name)) {
+        throw new Error();
+      }
+
+      if (
+        name === 'sslmode' &&
+        !['require', 'verify-full'].includes(parameterValue)
+      ) {
+        throw new Error();
+      }
+
+      if (
+        name === 'channel_binding' &&
+        !['require', 'prefer', 'disable'].includes(parameterValue)
+      ) {
+        throw new Error();
+      }
+    }
+
     return value;
-  } catch { throw new Error('Invalid DATABASE_URL'); }
+  } catch {
+    throw new Error('Invalid DATABASE_URL');
+  }
 }
+
 export function workerMode(value: string | undefined): 'idle' {
   if (value !== undefined && value !== 'idle') throw new Error('Invalid WORKER_MODE: only idle is supported');
   return 'idle';

@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@classroom/shared": "*",
-    "fastify": "5.12.5"
-  },
+  "@classroom/database": "*",
+  "@classroom/github": "*",
+  "@classroom/shared": "*",
+  "fastify": "5.12.5"
+},
   "version": "0.0.0"
 }

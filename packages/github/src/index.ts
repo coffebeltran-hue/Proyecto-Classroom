@@ -218,3 +218,10 @@ export function createUserRevocationProbe(record: (observation: RevocationObserv
     dispose() { disposed = true; discard(); },
   });
 }
+export {
+  createGitHubAuth,
+  type GitHubAuthConfig,
+  type GitHubAuthorizationInput,
+  type GitHubCodeExchangeInput,
+  type GitHubUserIdentity,
+} from './auth.js';

@@ -1,0 +1,1 @@
+ALTER TABLE "oauth_attempts" ADD COLUMN "binding_hash" text NOT NULL;
