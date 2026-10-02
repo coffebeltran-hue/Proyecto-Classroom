@@ -17,6 +17,13 @@ describe('executable boundaries', () => {
     expect(port(undefined)).toBe(3001);
     for (const value of [undefined, 'secret', 'https://user:secret@localhost/db', 'postgres://localhost/db?password=secret']) expect(() => databaseUrl(value)).toThrow('Invalid DATABASE_URL');
     expect(databaseUrl('postgresql://localhost/classroom')).toBe('postgresql://localhost/classroom');
+    expect(
+      databaseUrl(
+        'postgresql://localhost/classroom?sslmode=require&channel_binding=require',
+      ),
+    ).toBe(
+      'postgresql://localhost/classroom?sslmode=require&channel_binding=require',
+    );
     expect(() => startIdleWorker('active')).toThrow('Invalid WORKER_MODE');
   });
   it('keeps an idle worker alive and releases its only timer', () => {
