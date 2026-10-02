@@ -8,9 +8,11 @@
       "outputDirectory": "dist"
     },
     "api": {
-      "root": "apps/api/",
+      "root": ".",
       "framework": "fastify",
-      "entrypoint": "src/server.ts"
+      "entrypoint": "apps/api/src/server.ts",
+      "buildCommand": "echo 'Fastify API: zero-config build'",
+      "installCommand": "npm ci --include=dev"
     }
   },
   "rewrites": [
