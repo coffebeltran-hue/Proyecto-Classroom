@@ -8,9 +8,9 @@
       "outputDirectory": "dist"
     },
     "api": {
-      "root": ".",
+      "root": "apps/api/",
       "framework": "fastify",
-      "entrypoint": "apps/api/src/server.ts"
+      "entrypoint": "src/server.ts"
     }
   },
   "rewrites": [
