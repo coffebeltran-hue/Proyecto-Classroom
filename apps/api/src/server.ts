@@ -1,13 +1,4 @@
-import { Pool } from 'pg';
-
-import { createInstitutionAccessRepository } from '../../../packages/database/src/access.js';
-import { createAdminRepository } from '../../../packages/database/src/admin.js';
-import { createAuthRepository } from '../../../packages/database/src/auth.js';
-import { createGitHubAuth } from '../../../packages/github/src/index.js';
-
-import { createApp } from './app.js';
-
-console.log('[BOOT] server.ts loaded');
+console.log('[BOOT 0] server.ts entered');
 
 function requiredEnvironment(name: string): string {
   const value = process.env[name]?.trim();
@@ -19,10 +10,39 @@ function requiredEnvironment(name: string): string {
   return value;
 }
 
-let app: ReturnType<typeof createApp> | undefined;
+let app: any;
 
 try {
-  console.log('[BOOT] environment presence', {
+  console.log('[BOOT 1] importing pg');
+  const { Pool } = await import('pg');
+  console.log('[BOOT 1] pg OK');
+
+  console.log('[BOOT 2] importing auth repository');
+  const { createAuthRepository } =
+    await import('../../../packages/database/src/auth.js');
+  console.log('[BOOT 2] auth repository OK');
+
+  console.log('[BOOT 3] importing access repository');
+  const { createInstitutionAccessRepository } =
+    await import('../../../packages/database/src/access.js');
+  console.log('[BOOT 3] access repository OK');
+
+  console.log('[BOOT 4] importing admin repository');
+  const { createAdminRepository } =
+    await import('../../../packages/database/src/admin.js');
+  console.log('[BOOT 4] admin repository OK');
+
+  console.log('[BOOT 5] importing GitHub module');
+  const { createGitHubAuth } =
+    await import('../../../packages/github/src/index.js');
+  console.log('[BOOT 5] GitHub module OK');
+
+  console.log('[BOOT 6] importing app');
+  const { createApp } =
+    await import('./app.js');
+  console.log('[BOOT 6] app OK');
+
+  console.log('[BOOT 7] checking environment', {
     DATABASE_URL: Boolean(process.env.DATABASE_URL),
     AUTH_GITHUB_CLIENT_ID: Boolean(
       process.env.AUTH_GITHUB_CLIENT_ID,
@@ -36,14 +56,11 @@ try {
     FRONTEND_ORIGIN: Boolean(
       process.env.FRONTEND_ORIGIN,
     ),
-    VERCEL_ENV: process.env.VERCEL_ENV ?? null,
-    NODE_ENV: process.env.NODE_ENV ?? null,
   });
 
-  console.log('[BOOT] reading DATABASE_URL');
   const databaseUrl = requiredEnvironment('DATABASE_URL');
 
-  console.log('[BOOT] creating postgres pool');
+  console.log('[BOOT 8] creating pool');
   const pool = new Pool({
     connectionString: databaseUrl,
     max: 2,
@@ -53,12 +70,12 @@ try {
     query_timeout: 6000,
   });
 
-  console.log('[BOOT] creating repositories');
+  console.log('[BOOT 9] creating repositories');
   const auth = createAuthRepository(pool);
   const access = createInstitutionAccessRepository(pool);
   const admin = createAdminRepository(pool);
 
-  console.log('[BOOT] creating GitHub auth');
+  console.log('[BOOT 10] creating GitHub auth');
   const githubAuth = createGitHubAuth({
     clientId: requiredEnvironment(
       'AUTH_GITHUB_CLIENT_ID',
@@ -71,7 +88,7 @@ try {
     ),
   });
 
-  console.log('[BOOT] creating Fastify app');
+  console.log('[BOOT 11] creating Fastify app');
   app = createApp({
     auth,
     access,
@@ -86,19 +103,17 @@ try {
 
   const port = Number(process.env.PORT ?? '3000');
 
-  console.log('[BOOT] starting Fastify', {
-    port,
-  });
+  console.log('[BOOT 12] calling listen', { port });
 
   await app.listen({
     port,
     host: '0.0.0.0',
   });
 
-  console.log('[BOOT] Fastify listening');
+  console.log('[BOOT 13] listening');
 } catch (error) {
   console.error(
-    '[BOOT] FAILED',
+    '[BOOT FAILED]',
     error instanceof Error
       ? {
           name: error.name,
