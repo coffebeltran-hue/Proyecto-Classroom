@@ -11,7 +11,8 @@
       "root": ".",
       "framework": "fastify",
       "entrypoint": "apps/api/src/server.ts",
-      "buildCommand": "npm run build"
+      "buildCommand": "npm run build",
+      "installCommand": "npm ci --include=dev"
     }
   },
   "rewrites": [
