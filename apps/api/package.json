@@ -3,10 +3,12 @@
   "private": true,
   "type": "module",
   "dependencies": {
-  "@classroom/database": "*",
-  "@classroom/github": "*",
-  "@classroom/shared": "*",
-  "fastify": "5.12.5"
-},
+    "@classroom/database": "*",
+    "@classroom/github": "*",
+    "@classroom/shared": "*",
+    "fastify": "5.12.5",
+    "pg": "8.23.0",
+    "octokit": "5.0.5"
+  },
   "version": "0.0.0"
 }
