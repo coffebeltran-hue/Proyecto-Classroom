@@ -1,11 +1,6 @@
-import Fastify from 'fastify';
+import { createApp } from './app.js';
 
-const app = Fastify({ logger: true });
-
-app.get('/health/live', async () => ({
-  status: 'alive',
-  scope: 'vercel-fastify',
-}));
+const app = createApp();
 
 app.listen({
   port: Number(process.env.PORT ?? 3000),
