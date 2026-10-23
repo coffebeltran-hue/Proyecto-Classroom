@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "../..",
+    "outDir": "../../.local/vercel-api-build",
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "src",
+    "../../packages/shared/src",
+    "../../packages/database/src",
+    "../../packages/github/src"
+  ],
+  "exclude": [
+    "../../tests",
+    "../../apps/worker",
+    "../../apps/web"
+  ]
+}
