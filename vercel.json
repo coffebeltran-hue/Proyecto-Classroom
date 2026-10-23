@@ -8,11 +8,9 @@
       "outputDirectory": "dist"
     },
     "api": {
-      "root": ".",
+      "root": "apps/api/",
       "framework": "fastify",
-      "entrypoint": "apps/api/src/server.ts",
-      "installCommand": "npm ci --include=dev",
-      "buildCommand": "npm run build:vercel --workspace=@classroom/api"
+      "entrypoint": "src/server.ts"
     }
   },
   "rewrites": [
