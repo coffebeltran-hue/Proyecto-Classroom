@@ -12,7 +12,7 @@
       "framework": "fastify",
       "entrypoint": "apps/api/src/server.ts",
       "installCommand": "npm ci --include=dev",
-      "buildCommand": "echo 'Fastify API: Vercel handles runtime packaging'"
+      "buildCommand": "npm run build"
     }
   },
   "rewrites": [
