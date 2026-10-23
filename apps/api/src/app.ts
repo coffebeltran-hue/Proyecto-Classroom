@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import { liveness } from '@classroom/shared';
+import { liveness } from '../../../packages/shared/src/index.js';
 import type {
   createAdminRepository,
   createAuthRepository,
