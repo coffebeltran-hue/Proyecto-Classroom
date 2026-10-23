@@ -1,5 +1,4 @@
 import Fastify from 'fastify';
-import { liveness } from '../../../packages/shared/src/index.js';
 import type {
   createAdminRepository,
   createAuthRepository,
@@ -28,6 +27,8 @@ type InstitutionAccessRepository = ReturnType<
 >;
 type AdminRepository = ReturnType<typeof createAdminRepository>;
 type GitHubAuth = ReturnType<typeof createGitHubAuth>;
+
+const liveness = { status: 'alive' as const, scope: 'process' as const };
 
 export interface AppDependencies {
   auth: AuthRepository;
