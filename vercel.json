@@ -10,9 +10,7 @@
     "api": {
       "root": "apps/api/",
       "framework": "fastify",
-      "entrypoint": "src/server.ts",
-      "buildCommand": "echo 'Fastify API: zero-config build'",
-      "installCommand": "npm ci --include=dev"
+      "entrypoint": "src/server.ts"
     }
   },
   "rewrites": [
